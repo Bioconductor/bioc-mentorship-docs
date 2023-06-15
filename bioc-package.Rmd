@@ -1,8 +1,11 @@
 # Making a Bioconductor package {#bioc-package}
 
-This chapter demonstrates the making of a Bioconductor package using a workflow
-that includes the CRAN package `r BiocStyle::CRANpkg("usethis")` and the
-Bioconductor package `r BiocStyle::Biocpkg("biocthis")`.
+This chapter demonstrates how to make a Bioconductor package using a workflow
+that utilises the following R packages:
+
+1. `r BiocStyle::CRANpkg("rworkflows")` (CRAN)
+2. `r BiocStyle::CRANpkg("usethis")` (CRAN)
+3. `r BiocStyle::Biocpkg("biocthis")` (Bioconductor)
 
 This is just one example of an opinionated workflow for making a
 Bioconductor-friendly package, highlighting accessory packages
@@ -17,7 +20,7 @@ when working on their subsequent packages.
 
 Throughout this chapter, this example is used to illustrate essential and
 recommended components for Bioconductor packages, to give readers knowledge
-and information allowing them to develop Bioconductor packages indepedently
+and information allowing them to develop Bioconductor packages independently
 of this workflow, if they so wish.
 
 ## Environment
@@ -45,15 +48,16 @@ if (!requireNamespace("remotes", quietly = TRUE)) {
 }
 ```
 
+
+### CRAN packages
+
 Next, we immediately used the newly installed package to install a number of
 CRAN packages that will be used to develop the new Bioconductor package.
 
 ```{r, eval=FALSE}
 remotes::install_cran(
     c(
-        "available",
-        "BiocManager",
-        "biocthis",
+        "available", 
         "devtools",
         "knitr",
         "pkgdown",
@@ -62,20 +66,21 @@ remotes::install_cran(
         "rstudioapi",
         "sessioninfo",
         "styler",
-        "usethis"
+        "usethis",
+        "rworkflows"
     )
 )
 ```
 
-Next, we install the Bioconductor package `r BiocStyle::Biocpkg("BiocStyle")`,
-if it is not installed yet.
-That package will be used for styling the vignettes of the new Bioconductor
-package and linking to other packages.
+### Bioconductor packages
+
+Next, we install the Bioconductor packages if they are not yet installed.
+
+`r BiocStyle::Biocpkg("BiocStyle")` will be used for styling the vignettes 
+of the new Bioconductor package and linking to other packages.
 
 ```{r, eval=FALSE}
-if (!requireNamespace("BiocStyle", quietly = TRUE)) {
-    BiocManager::install("BiocStyle")
-}
+remotes::install_bioc(c("biocthis","BiocStyle")) 
 ```
 
 ## Check if the package name is available on CRAN and Bioconductor
@@ -115,7 +120,40 @@ sub-strings, and acronyms.
 It is up to you to check the contents of those pages and decide whether you
 wish to continue the process with that package name.
 
-## Create a package template with `usethis`
+## Create a package template 
+
+Once we are satisfied with the name of your package, 
+we can begin creating the package using a template. 
+Here, we provide two alternative workflows for creating an R package template:
+
+1. **Using `rworkflows`**: Quick and easy with dynamic autofilling of redundant information. 
+2. **Using `usethis` + `biocthis`**: Requires more manual steps, but enables more extensive cutomisability. 
+  
+### Using `rworkflows`
+
+[`templateR`](https://github.com/neurogenomics/templateR) is an R package template distributed via GitHub and is part of the [`rworkflows` suite](https://github.com/neurogenomics/rworkflows). 
+
+It aims to automate R package creation as much as possible by filling out the template for you with using information extracted from the `DESCRIPTION` file. This minimises the amount of time you have to spend entering the same information in manually for each file (e.g. package name/description, documentation site, vignette links). Importantly, it does this dynamically such that if you ever decide to change any of these fields, the updated information will be automatically propagated to all relevant files in your package.
+
+To create your template, simply navigate to the [`templateR` GitHub repository](https://github.com/neurogenomics/templateR) and click the *Use this template* button in the upper right, and follow the steps to create a new Github repository:
+
+![Creating template with templateR](images/templateR-create.png){width=100%} 
+
+Finally, clone the repo to your local machine. 
+
+**How to clone**
+
+In your new repository created from the template,
+click the green `[<> Code]` button and copying the **HTTPS** URL.
+Then enter `git clone <URL>` into your command line terminal.
+It should look something like this:
+
+```
+git clone https://github.com/OwnerName/MyBioconductorPackage.git
+```
+Now you can [create a project within Rstudio](https://bookdown.org/daniel_dauber_io/r4np_book/starting-your-r-projects.html) and start working on your new package!
+
+### Using `usethis` + `biocthis`
 
 When we are satisfied with the name of your package, we use the function
 `usethis::create_package()` to create a package template.
@@ -181,12 +219,13 @@ Alphabetically:
 - The essential directory `R/` - initially empty - is used to store R scripts
   that contain the code of the new package.
 
-## Create template scripts using `biocthis`
+#### Create template scripts 
 
 At this point, we use the Bioconductor package
 `r BiocStyle::Biocpkg("biocthis")` to generate some R scripts with the goal of
 helping automate the process of creating R packages for Bioconductor or making
-them Bioconductor-friendly.
+them Bioconductor-friendly. 
+
 
 ```{r, eval=FALSE}
 biocthis::use_bioc_pkg_templates()
@@ -211,7 +250,7 @@ scripts are created.
 
 In the next sections, we will go through those R scripts in turn.
 
-## Create the R package
+#### Create the R package
 
 Open the file `dev/01_create_pkg.R`.
 
@@ -228,7 +267,7 @@ RStudio application, or we can run the last line of code in the script
 rstudioapi::navigateToFile(usethis::proj_path("dev", "02_git_github_setup.R"))
 ```
 
-## Exclude files from git version control
+#### Exclude files from git version control
 
 In this example, the first step in the script `02_git_github_setup.R` is
 to add a line in the file `.gitignore`, declaring that any file ending with the
@@ -256,7 +295,7 @@ If you wish to visualise the change, you can open the file `.gitignore`.
 You will see that the last two lines of the file now declare `*.Rproj` and
 `dev/`.
 
-## Set up git
+#### Set up git
 
 Next, the script gives us the command to set up git version control for the new
 package.
@@ -321,7 +360,7 @@ Note:
 
 ![Show hidden files.](images/rstudio-show-hidden-files.png){width=100%}
 
-## Connect the git repository to GitHub
+#### Connect the git repository to GitHub
 
 The [GitHub](https://github.com/) website provides a platform to build, ship,
 and maintain software, free of charge for public repositories.
@@ -375,6 +414,40 @@ GitHub repository in our default web browser.
 
 ## Edit the DESCRIPTION file
 
+The `DESCRIPTION` file is essential to any R package and contains metadata about 
+the package's name, description, and software dependencies, etc.
+
+**Bioconductor-specific fields**:
+
+Bioconductor requires an additional field named `biocViews`.
+The field must be populated by terms selected from a controlled vocabulary,
+to facilitate the thematic classification of the new package on the Bioconductor
+website.
+The full list of available biocViews can be navigated
+[here](https://www.bioconductor.org/packages/release/BiocViews.html).
+
+### Setup 
+
+#### Using `rworkflows`
+
+If you used the `templateR` method above for creating the package template, 
+you can use the function `rworkflows::fill_description()` 
+to update as many of the fields in the default `DESCRIPTION` as you prefer.
+Whichever arguments are not specified by the user are automatically 
+set to reasonable defaults.
+
+The only required arguments are:  
+* `package`: The name of your R package.
+* `title`: The title of your R package.
+* `description`: The description of your R package.
+* `github_owner`: The owner of your R package's GitHub repository 
+  (you can set this to `NA` if this is not applicable to your package).
+  
+For more detailed guidance on how to fill out these fields, 
+please see [below](#package_name).
+
+#### Using `usethis` + `biocthis` 
+ 
 Open the file `dev/03_core_files.R` and follow the instructions.
 
 The first comment in the script recommends to edit the file `DESCRIPTION`.
@@ -383,21 +456,15 @@ Great sources of information for best practices on that subject are:
 - <http://r-pkgs.had.co.nz/description.html>
 - <http://contributions.bioconductor.org/description.html>
 
-Before we start editing any of the fields, we use the function `biocthis::use_bioc_description()` to add two more fields.
-
-First, Bioconductor requires an additional field named `biocViews`.
-The field must be populated by terms selected from a controlled vocabulary,
-to facilitate the thematic classification of the new package on the Bioconductor
-website.
-The full list of available biocViews can be navigated
-[here](https://www.bioconductor.org/packages/release/BiocViews.html).
+Before we start editing any of the fields, we use the function
+`biocthis::use_bioc_description()` to add two more fields.
 
 Separately, an optional field named `Date` can also be added to the file
 `DESCRIPTION`. If available, that field is used for generating the package
 citation information.
 
-Both fields are added and automaticall filled bu the function
-`biocthis::use_bioc_description()`.
+Both fields are added and automatically filled by the function
+`biocthis::use_bioc_description()`. 
 
 ```{r, eval=FALSE}
 biocthis::use_bioc_description()
@@ -434,6 +501,8 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
 ```
 
+### Package name {#package_name}
+
 Now we open the file `DESCRIPTION` and carefully examine each field.
 
 First, the field `Package` already contains the name that we have chosen for our
@@ -443,10 +512,13 @@ new package.
 Package: MyBioconductorPackage
 ```
 
-Note:
+**Note**:
 
 - If you decide to change the package name from this point onward, you should be
-  mindful of all the other places where you will need to also update that name.
+  mindful of all the other places where you will need to also update that name
+  (though this is less of a concern when using `templateR`).
+
+### Package title
 
 Next, the field `Title` is the first field that we want to update from the
 default placeholder.
@@ -460,6 +532,8 @@ inspiration.
 ```
 Title: Demonstration of a Bioconductor Package
 ```
+
+### Package version
 
 Next, the field `Version` must be set to either version `0.99.0` or any
 version number that is [semantically](https://semver.org/) lower than that.
@@ -477,12 +551,16 @@ submission to the Bioconductor project (e.g., `0.1.0` -> `0.2.0` -> `0.2.1`).
 Version: 0.99.0
 ```
 
+### Package date
+
 Next, we leave the field `Date` to the date of today, that was automatically
 filled by the function `biocthis::use_bioc_description()`.
 
 ```
 Date: 2022-05-10
 ```
+
+### Package authors
 
 Next, the field `Authors@R` must also be changed from the default placeholder
 to provide information about the package developer(s) and maintainer.
@@ -502,6 +580,8 @@ Authors@R:
              comment = c(ORCID = "0000-0003-3899-3872")))
 ```
 
+### Package description
+
 Next, the field `Description` must also be changed to provide a longer
 description of the package, albeit general guidelines recommend to keep the
 length of that field to a single paragraph.
@@ -520,11 +600,17 @@ Note:
   lines, in a way that each line of the file `DESCRIPTION` does not exceed 80
   characters, and each line from the second one is indented by four spaces.
 
+### Package license
+
 Next, the field `License` declares the licensing choice made by the copyright
 holder of the package.
-Bioconductor packages are typically licensed under `Artistic-2.0`, although
+Bioconductor packages are often licensed under `Artistic-2.0`, although
 a number of other choices are commonly accepted for community-contributed
-packages.
+packages (e.g. `GPL-3`). 
+
+For help choosing which license is right for your package, please see these resources provided by [GitHub](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/licensing-a-repository) and 
+[choosealicense.com](https://choosealicense.com/) 
+
 In this example, we leave the `Artistic-2.0` license automatically set by the
 function `biocthis::use_bioc_description()`.
 
@@ -532,13 +618,15 @@ function `biocthis::use_bioc_description()`.
 License: Artistic-2.0
 ```
 
+### Package URL and BugReports
+
 The next two fields of the file are `URL` and `BugReports`,
 which were recently added by the function `usethis::use_github()` and 
 subsequently edited by the function `biocthis::use_bioc_description()`.
 
 ```
-URL: https://github.com/kevinrue/MyBioconductorPackage
-BugReports: https://support.bioconductor.org/t/MyBioconductorPackage
+URL: https://github.com/<OwnerName>/<MyBioconductorPackage>
+BugReports: https://github.com/<OwnerName>/<MyBioconductorPackage>/issues
 ```
 
 Although this demonstration package may never be actually included in the
@@ -546,14 +634,92 @@ Bioconductor repository, we decide to leave the `BugReports` field to a URL
 directing to the [Bioconductor support site](https://support.bioconductor.org),
 as it is a great source of information from fellow package users and developers.
 
-Next, we can leave the Bioconductor-specific field `biocViews` to the value
-`Software` automatically filled by the function
-`biocthis::use_bioc_description()`, at least until we add some code to the
-package and determine other terms that best describe our new package.
+### Package Depends
+
+The *Depends* field specifies the system dependencies of the R package. 
+At a minimum, you must specify the subversion of R (e.g. `R (>=4.2)`).
+
+`rworkflows::fill_description()` automatically fill in the appropriate version of R 
+for the current Bioconductor development version.
+
+You can also call the `rworkflows::bioc_r_versions()` directly to assist you in determining the appropriate version of R based on the official requirements set for a Bioconductor release.
+
+```{r, eval=FALSE}
+versions <- rworkflows::bioc_r_versions(bioc_version = "devel",
+                                        depth = 2)
+versions$bioc # e.g. 3.17
+versions$r # e.g. 4.3
+```
+
+
+### Package Imports
+
+The *Imports* field is used to specify other R packages that are required 
+for your R package to work.
+
+`rworkflows::fill_description()` automatically infers this field based on the function calls within your R package's code.
+
+You can also call the `rworkflows::infer_deps()` directly to have more refined control over which packages get assigned to this field, including the ability to manually specify certain Imports via the `imports=` argument.
+
+```{r, eval=FALSE}
+rworkflows::infer_deps(which = "Imports",
+                       imports = "BiocGenerics")
+```
+
+
+### Package Suggests
+
+The *Suggests* field is used to specify other R packages that are used infrequently within your R packages. The big difference between *Suggests* and *Imports* is that packages under *Imports* will be installed by default when users install your package, while packages under *Suggests* will not (unless otherwise specified, e.g. `remotes::install_github(..., dependencies = TRUE)`).
+
+`rworkflows::fill_description()` automatically infers this field based on the function calls within your R package's code.
+
+You can also call the `rworkflows::infer_deps()` directly to have more refined control over which packages get assigned to this field, including the ability to manually specify certain Suggests via the `suggests=` argument.
+
+```{r, eval=FALSE}
+rworkflows::infer_deps(which = "Suggests",
+                       suggests = "htmltools")
+```
+
+
+### Package Remotes
+
+*Remotes* is a field that specifies where R package dependencies that are not in standard repositories like CRAN or Bioconductor can be installed from.
+
+This can be helpful in several scenarios:
+1. Your package requires a development version of a package with bug fixes
+that have not yet been deployed to Bioconductor/CRAN.
+2. Your package requires an R package that is exclusively distributed
+through GitHub or some other non-standard R package distributor.
+
+Optionally, you can include the `@<branch>` modifier at the end of the remote 
+to specify a particular branch of the package's GitHub repo to install from (e.g. `@master`, `@devel`).
 
 ```
-biocViews: Software
+Remotes:
+  github::lawremi/rtracklayer@master
 ```
+
+:warning: **NOTE**: :warning:
+
+The *Remotes* field should NOT be used for packages that you plan to release on standard R package repositories like Bioconductor or CRAN as the inclusion of this field will generate an error during code checks. Nevertheless, we describe this field here for comprehensiveness, and because it may be helpful to developers during early stages of creating their R package, or for those who distribute their R packages exclusively through GitHub.
+
+
+### Package biocViews
+
+`bioViews` are a series of standardised terms used for describing Bioconductor packages.
+
+You can manually browse through the different options available for the `bioViews` by checking the [Bioconductor website here](https://www.bioconductor.org/packages/release/BiocViews.html).
+
+Alternatively, you can fill this out automatically using `rworkflows::infer_biocviews()`, 
+which automatically scans through your R package's code and infers the most appropriate `biocViews` terms. Internally, this calls the `biocViews::recommendBiocViews` function to infer these terms. This is the default strategy employed by `rworkflows::fill_description()`.
+
+Here is an example of what a filled out `biocViews` field might look like:
+
+```
+biocViews: Software Genetics Transcriptomics
+```
+
+### Package Encoding
 
 Next, the field `Encoding` can usually be left at the default value.
 In this example, this is `UTF-8`.
@@ -562,6 +728,8 @@ In this example, this is `UTF-8`.
 Encoding: UTF-8
 ```
 
+### Package Roxygen and RoxygenNote
+
 Finally, the fields `Roxygen` and `RoxygenNote` can usually be left to their
 default value.
 In this example, those were `list(markdown = TRUE)` and `7.1.2`, respectively.
@@ -569,6 +737,8 @@ The former is a list of options passed to the CRAN package
 `r BiocStyle::CRANpkg("roxygen2")` -- used to generate manual pages -- while
 the latter tracks the version of `BiocStyle::CRANpkg("roxygen2")` that was last
 used to manage the documentation in this particular Bioconductor package.
+
+### Summary 
 
 With that, we have finished out first round of edits to the file `DESCRIPTION`.
 Importantly, we have highlighted many of the fields in this file that are prone
@@ -581,7 +751,7 @@ to regular updates as the package continues to be developed:
   or new contributors to the package.
 - the `Description` field can be updated to refine information about the
   package, for instance as new functionality is added.
-- the `BugReports` field can be updated when the package is acccepted in the
+- the `BugReports` field can be updated when the package is accepted in the
   Bioconductor repository.
 - the `biocViews` field can be updated to refine the list of terms used to
   thematically classify the package in the Bioconductor repository.
@@ -593,9 +763,27 @@ useful information to new users, such as instructions to install the package,
 a brief showcase of the package functionality, or preferences for citing the
 package.
 
+### Using `rworkflows`
+
+If using the `templateR` R package template, a `README.Rmd` is already included.
+This file automatically extracts relevant information from the `DESCRIPTION` file 
+(e.g. package name, package title, GitHub URL) and fills the README accordingly. 
+This includes links to the documentation website, installation instructions, and citation information.
+
+To update the resulting `README.md` file, simply `knit` the `README.Rmd` file
+(after making any additional changes you would like). 
+For further details, please see the [**Build README**](#build_readme) section.
+
+If you didn't use the `templateR` template, you can still generate the dynamically
+autofilled `README.Rmd` using `rworkflows::use_readme()`. 
+
+### Using `usethis` + `biocthis` 
+
 In this example, we use function `biocthis::use_bioc_readme_rmd()` to generate
 a template R Markdown file named `README.Rmd`, that we will adapt to our own
 new package before compiling it to a regular Markdown file `README.md`.
+
+#### Setup
 
 ```{r, eval=FALSE}
 biocthis::use_bioc_readme_rmd()
@@ -615,14 +803,14 @@ of the RStudio application, where we can carefully read and edit it as needed.
 We see that the initial template contains code that we can expect to fail at
 this point in time.
 
+#### Installation instructions
+
 First, some of the instructions in the section `## Installation instructions`
 clearly assume that our new package can be obtained and installed from the
 Bioconductor repository.
 
 ```{r, eval = FALSE}
-if (!requireNamespace("BiocManager", quietly = TRUE)) {
-    install.packages("BiocManager")
-}
+if (!require("BiocManager", quietly = TRUE)) install.packages("BiocManager")
 
 BiocManager::install("MyBioconductorPackage")
 ```
@@ -634,14 +822,26 @@ acceptable to keep them as a placeholder, as they indicate our intention to
 submit that package to the Bioconductor repository, and those command will be 
 valid when the package is accepted and included in the Bioconductor repository.
 
+In the meantime, you can provide alternative instructions 
+to install you package directly from GitHub 
+(where "OwnerName" is the name of the account in which the GitHub repo resides):
+
+```{r, eval = FALSE}
+if (!require("remotes", quietly = TRUE)) install.packages("remotes")
+
+remotes::install_github("OwnerName/MyBioconductorPackage")
+```
+
+#### Example
+
 Similarly, the section `## Example` demonstrates how to load the package, as
 well as running some code that is currently unrelated to our new package.
 
 ```{r, eval=FALSE}
 library("MyBioconductorPackage")
-...
+# ...
 summary(cars)
-...
+# ...
 plot(pressure)
 ```
 
@@ -655,6 +855,8 @@ Again, the rest of this template file describes aspects of the package that are
 not in place yet.
 In this example, we choose to keep this template file exactly as it was
 generated, as there is nothing that needs urgent attention or editing.
+
+#### Build README {#build_readme}
 
 Following the next set of instructions in the script `03_core_files.R`, we use
 the function `devtools::build_readme()` to compile the R Markdown file
@@ -872,11 +1074,31 @@ By default, the form for reporting issue is entirely blank, leaving users to
 decide what information they think is sufficient to describe their issue.
 GitHub repositories have the possibility of including template forms designed to
 guide users in identifying and reporting all the information relevant to their
-issue.
-Useful information often involves a minimal reproducible example, including
-a small data set that is either publicly available or simulated by some code,
+issue. 
+
+Instead, can be helpful (to both developers and users) 
+to provide users with a template for Issues. 
+Useful information often involves a minimal reproducible example,
+including a small data set that is either publicly available or simulated by some code,
 alongside the code that is either throwing an error, or producing an
 unexpected output.
+
+### Using `rworkflows`
+
+`rworkflows::use_issue_template()` provides several pre-created Issues templates, 
+which it will copy into the correct subfolder structure for you. Templates include:
+
+1. *bug_report.md*: A guide for users on how to report bugs in a way that 
+is designed to minimise miscommunications and back-and-forth troubleshooting.
+2. *feature_request.md*: A standard template for users to request 
+new or expanded features within your R package.
+
+```{r, eval=FALSE}
+rworkflows::use_issue_template(templates = c("bug_report.md", "feature_request.md"))
+```
+
+
+### Using `usethis` + `biocthis`
 
 In this example, we use the function `biocthis::use_bioc_issue_template()`
 to create a new sub-directory `.github/ISSUE_TEMPLATE` and a template file
@@ -902,6 +1124,15 @@ In this example, we decide to keep the original contents as they are.
 Optionally, R packages can contain a file `inst/CITATION`, that provides
 information encouraging and guiding users wishing to cite an article or book
 related to the package.
+
+### Using `rworkflows`
+
+A standard `CITATION` file is included within the `inst` subdirectory 
+of the `templateR` R package template. 
+Simply update this file with your R package's citation information 
+in any text editor (including Rstudio). 
+
+### Using `usethis` + `biocthis`
 
 In this example, we use the function `biocthis::use_bioc_citation()`
 to create a new sub-directory `inst` and a template file `CITATION`
@@ -942,9 +1173,38 @@ and examine the new contents in the section `## Citation`.
 Optionally, status badges can be added to the `README.Rmd` file, and displayed
 in the `README.md` file. 
 
+### Using `rworkflows`
+
+`rworkflows::use_badges()` makes generating many different types of badges at once very easy by wrapping them into a single R function. Which badges are included is fully customisable through arguments. This means that you don't have to worry about manually updating badges each time some aspect of your package changes.
+
+It can also generate code to display images like hex stickers within GitHub markdown files (e.g. `README.md`). By default, it searches for a hex sticker named `inst/hex/hex.png` within the GitHub repository, you can can also specify a custom path by supplying `add_hex` with a character string instead (e.g. `add_hex="path/to/mysticker.png"`). If no such hex sticker exists, this step will be gracefully skipped.
+
+Here, the `ref` arg refers to the owner/name of your R package's GitHub repository.
+See `?rworkflows::use_badges` for a full list of all arguments and a description of each one.
+
+```{r, eval=FALSE}
+rworkflows::use_badges(ref = "OwnerName/MyBioconductorPackage",
+                       add_doi = "10.1111/2041-210X.12628",
+                       add_lifecycle = "experimental",
+                       add_hex = TRUE,
+                       add_commit = TRUE,
+                       add_github_version = TRUE, 
+                       add_bioc_release = TRUE,
+                       add_bioc_download_rank = TRUE,
+                       add_bioc_download_month = TRUE,
+                       add_actions = "rworkflows", 
+                       add_codecov = TRUE, 
+                       add_codecov_graphs = "icicle",
+                       add_authors = TRUE
+                       )
+```
+
+
+### Using `usethis` + `biocthis`
+
 Lifecycle badges are popular to inform package users about the level of maturity
 that they can expect from the package.
-Packages in the earliest stages of developement -- as in our current
+Packages in the earliest stages of development -- as in our current
 example -- tend to be updated frequently, as new experimental functionality is
 regularly added, while bugs are being identified and fixed.
 Conversely, package at later stages of development tend to be more stable,
@@ -1106,6 +1366,16 @@ Coverage is a metric in software testing that measures the fraction of source
 code in a package that is traversed at least once during the execution the
 entire series of tests in that package.
 
+### Report test coverage
+
+#### Using `rworkflows`
+
+If you use the `rworkflows` GitHub Action (see section [below](#github_actions)), 
+no additional steps/files are necessary beyond creating your unit tests. 
+Code coverage will automatically be tested and the results will be uploaded to [Codecov](https://app.codecov.io). 
+
+#### Using `usethis` + `biocthis`
+
 In this example, we use the function `usethis::use_coverage()` to set up files
 and default settings for the execution and reporting of test coverage in our
 package.
@@ -1161,17 +1431,34 @@ Package vignettes are a requirement for Bioconductor packages, providing
 high-quality documentation and a thorough demonstration of the functionality
 in the package.
 
+#### Using `rworkflows`
+
+`rworkflows::use_vignette_getstarted` creates a basic "Get started" vignette in 
+a style that is compatible with automatically rendering `pkgdown` documentation websites.
+The `author:` field within the vignette yaml header is also dynamically filled from the information within the `DESCRIPTION` file, so it will always be up-to-date without having to manually edit it each time the authors in the `DESCRIPTION` change.
+
+In the example below, the command creates a new vignette file: 
+`vignettes/MyBioconductorPackage.Rmd`
+
+```{r, eval=FALSE}
+rworkflows::use_vignette_getstarted(package = "MyBioconductorPackage")
+```
+
+#### Using `usethis` + `biocthis`
+
 In this example, we use the function `biocthis::use_bioc_vignette()` to
 initialise a template vignette that we can examine and edit as needed.
 
 ```{r, eval=FALSE}
+## Only works if the folder name is the same as the package name
 pkg <- basename(usethis::proj_get())
+
 biocthis::use_bioc_vignette(pkg, paste("Introduction to", pkg))
 ```
 
 The R console displays information as package dependencies required for the
 compilation of the template vignette are added to the file `DESCRIPTION`.
-Simultaneously, a sub-directory `vignette/` is created,
+Simultaneously, a sub-directory `vignettes/` is created,
 and a R Markdown file `MyBioconductorPackage.Rmd` is created within that new
 sub-directory.
 Additionally, the file `.gitignore` is edited to add entry `inst/doc` that
@@ -1232,13 +1519,49 @@ distributed with the package.
 In this example, we leave the rest of the template vignette to its original
 contents.
 
-## Create a template GitHub Actions
+## Enable GitHub Actions {#github_actions}
 
 In the earlier section
 [Add badges to the README file](#add-badges-to-the-readme-file),
 we added a badge that reports the status of a
 [GitHub Actions](https://github.com/features/actions) workflow that we are only
 about to create now.
+
+### Key differences between `rworkflows` vs. `usethis` + `biocthis` strategies
+
+When it comes to GitHub Actions, there is one major key difference between the two strategies:
+
+1. **Using `rworkflows`**: Uses [a centrally maintained **action**](https://github.com/neurogenomics/rworkflows/blob/master/action.yml) 
+(eponymously named `rworkflows`) that is distributed via the [GitHub Actions Marketplace](https://github.com/marketplace/actions/rworkflows). This strategy only generates a short yaml file that contains parameters for calling the main `rworkflows` action.
+2. **Using `usethis` + `biocthis`**: Generates a static yaml file containing the full code to run all steps of the workflow.
+
+This means that when using the latter strategy, if anything in the static **workflow** file breaks the user must debug it themselves or wait until the next release of Bioconductor (in the case of `biocthis`). 
+
+In contrast, fixes pushed to the `rworkflows` **action** are immediately propagated to all users of the action the next time they run GitHub Actions. Users also have more nuanced control over which version of the `rworkflows` **action** they wish to call, as GitHub Actions support tagged releases (e.g. `@v1`) in addition to calling from specific branches (e.g. `@master`).
+
+### Using `rworkflows`
+
+To set up GitHub Actions with `rworkflows`, the following command only needs to be run once per R package. This generates a short yaml workflow containing just the runners (which OS platforms you want to launch GitHub Actions on) and the parameters to call the `rworkflows` **action** with.
+
+See `?rworkflows::use_workflow` for a full description of all arguments.
+
+```{r, eval=FALSE}
+rworkflows::use_workflow(run_pkgdown = TRUE, 
+                         run_rcmdcheck = TRUE,
+                         run_bioccheck = TRUE,
+                         run_docker = TRUE,
+                         docker_user = "MyDockerName", 
+                         force_new = TRUE)
+```
+
+
+These parameters can be updated at any time by simply rerunning the function while setting the argument `force_new=TRUE` to overwrite the old yaml file.
+
+Here is a diagram of the full `rworkflows` pipeline:
+![rworkflows pipeline](https://assets.researchsquare.com/files/rs-2399015/v1/91bae1deb692a749bb5c934f.jpg?maxDims=1200x1200)
+
+
+### Using `usethis` + `biocthis`
 
 In this example, we use the function `biocthis::use_bioc_github_action()` to
 initialise a template GitHub Actions workflow that includes a number of actions
@@ -1303,22 +1626,25 @@ presence of warning messages.
           )
 ```
 
-Note:
+**Note**:
 
 - Bioconductor recommends that packages should pass `R CMD check` without any
   WARNING nor ERROR message.
   
-## Using GitHub Actions
+## Deploy GitHub Actions
 
 In this example, we have regularly made commits to the git repository as we
 progressed through each section.
+
 We make a new commit now, all the files that we have recently created and
 edited, and we push the new git commit to GitHub.
 This can be done through a set of commands typed on the command line in a
 Terminal (e.g., the `Terminal` panel of the RStudio application), or using the
 `Git` panel of the RStudio application.
 
-### Using Git on Terminal command line
+### Push changes to GitHub
+
+#### Using Git on Terminal command line
 
 ```{bash, eval=FALSE}
 git add .
@@ -1326,7 +1652,7 @@ git commit -m "add template files"
 git push
 ```
 
-### Using the RStudio Git panel
+#### Using the RStudio Git panel
 
 We click the `Git` tab, then the `Diff` button, and in the popup, we type a
 commit message that describes the changes that we are making in this commit.
@@ -1335,25 +1661,33 @@ Then we click the `Commit` button, and the `Push` button.
 ![RStudio Git panel](images/rstudio-git-github-actions.png){width=100%}
 
 When the commit reaches the GitHub repository, the presence of the file
-`.github/workflows/check-bioc.yml` prompts GitHub to execute the GitHub Action
+`.github/workflows/*.yml` prompts GitHub to execute the GitHub Actions
 workflow.
 
 The log file produced by the GitHub Action workflow can be watched as it is
-being generated, in the "Actions" section of the GitHub repository:
-<https://github.com/kevinrue/MyBioconductorPackage/runs/6388422844?check_suite_focus=true>.
+being generated, in the ["Actions" tab of the GitHub repository](https://github.com/kevinrue/MyBioconductorPackage/runs).
 
 In this example, when the GitHub Action workflow completes, we see that it
-reports a single ERROR message that occurred during the step running
+reports a single `ERROR` message that occurred during the step running
 `BiocCheck::BiocCheck()`.
 
-The full report is fairly large; only the ERROR message is displayed below.
+The full report is fairly long,
+but here is the part containing the `ERROR` message:
 
 ```
 * Checking for non-trivial biocViews...
     * ERROR: Add biocViews other than Software
 ```
 
-To resolve that ERROR message, in this example, we open the file `DESCRIPTION`
+<details>
+<summary>Full GHA report</summary>
+```
+<paste report here>
+
+```
+</details>
+
+To resolve that `ERROR` message, in this example, we open the file `DESCRIPTION`
 and add the term `Infrastructure` to the section `biocViews`.
 
 ```
@@ -1363,16 +1697,28 @@ biocViews: Software,
 
 Then, we make another commit and push the updated repository to GitHub.
 
-![Make a commit that fixes an ERROR in the GitHub Actions workflow.](images/rstudio-git-biocviews-error.png){width=100%}
+![Make a commit that fixes an `ERROR` in the GitHub Actions workflow.](images/rstudio-git-biocviews-error.png){width=100%}
 
 When the push to the GitHub repository completes, the GitHub Actions workflow
 is automatically triggered.
-In this example, we are pleased to see that the previous ERROR message does not
+In this example, we are pleased to see that the previous `ERROR` message does not
 appear in the new report.
 
 However, we see that an issue is now reported, specifically on the Ubuntu
 platform.
 We will address this issue in the next section.
+
+
+### Special commit messages
+
+When pushing commits to GitHub while GitHub Actions is enabled, you can add special keywords to the commit messages to get certain behaviour.
+
+* `[skip ci]`: 
+  - **Behaviour**: One of [several synonymous keywords](https://docs.github.com/en/actions/managing-workflow-runs/skipping-workflow-runs) that prevent GitHub Actions from launching after pushing that commit.
+  - **Scope**: Can be used for any GitHub Actions workflow.
+* `/nocache`: 
+  - **Behaviour**: Overrides using any cached files or software installations from previous runs on GitHub Actions.
+  - **Scope**: Applies only to workflows generated with `rworkflows` or `biocthis`.
 
 ## Add R code
 
@@ -1431,7 +1777,7 @@ We will address this issue in the next section.
 In the GitHub Actions report produced by our changes in the previous section,
 we see that an error is reported in the section `Build and deploy pkgdown site`.
 
-The error messsage is copied below.
+The error message is copied below.
 
 ```
 > Run git config --local user.name "$GITHUB_ACTOR"
@@ -1530,7 +1876,10 @@ Navigate to that URL to find the online version of your package documentation!
 
 ![Package documentation deployed using `pkgdown`](images/pkgdown-github-pages.png){width=100%}
 
-## Continue developing the package
+
+## Summary
+
+### Continue developing the package
 
 At this point, all the essential components of our new Bioconductor-friendly
 package are in place.
@@ -1539,6 +1888,8 @@ We are now in a place where we can safely focus more of our attention to the
 source code and documentation of the package.
 Those are topics that will be covered in more details in other sections of this
 book.
+
+### Takeaways
 
 In the meantime, the takeaways from this chapter are:
 
@@ -1551,14 +1902,13 @@ In the meantime, the takeaways from this chapter are:
   + Vignettes are added in the sub-directory `vignettes/`.
   + Updates affecting the file `README.Rmd` requires you to re-compile that
     file, to apply those changes to the file `README.md`.
-- The template GitHub Actions workflow is run every time the repository is
-  pushed.
+- The GitHub Actions are run every time the repository is pushed.
 - Use the GitHub Actions report to identify and monitor issues that you should
   fix in your package.
 - Many aspects of software development are subject to changes,
   from Bioconductor best practices and requirements, to packages intended to
-  facilitate your work -- e.g. `r BiocStyle::CRANpkg("usethis")`
-  and `r BiocStyle::Biocpkg("biocthis")`.
+  facilitate your work -- e.g.: `r BiocStyle::CRANpkg("rworkflows")`, 
+  `r BiocStyle::CRANpkg("usethis")` and `r BiocStyle::Biocpkg("biocthis")`.
   You may need to stay informed and willing to adapt the contents of your
   package to match new requirements.
 - This chapter describes a number of optional components, and an opinionated
@@ -1574,7 +1924,14 @@ community and communicate with fellow package users and developers on the
 
 ## Further reading
 
-### `biocthis`
+### [`rworkflows`](https://github.com/neurogenomics/rworkflows)
+
+- [`rworkflows` suite documentation site](https://neurogenomics.github.io/rworkflows/)
+- [`rworkflows` GitHub Action Marketplace](https://github.com/marketplace/actions/rworkflows)
+- [`templateR` R package template](https://github.com/neurogenomics/templateR)
+- [`rworflows` manuscript](https://doi.org/10.21203/rs.3.rs-2399015/v1)
+
+### [`biocthis`](https://github.com/lcolladotor/biocthis)
 
 - [biocthis para ConectaR2021 - Leonardo Collado Torres (2020-01-28; 2 min video; Spanish)](https://youtu.be/3fLNsLchPnI) for ConectaR 2021.
   + [Slides (Spanish)](https://speakerdeck.com/lcolladotor/biocthis-conectar2021).

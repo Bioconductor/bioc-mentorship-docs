@@ -1,5 +1,39 @@
 # NEWS {#booknews}
 
+## Version 1.0.1 (2021-03-04)
+
+### New features
+
+* `bioc-package.Rmd`
+  - Split into parallel workflows: "`rworkflows`" and "`usethis` + `biocthis`".
+  - Removed section referencing `usethis::use_coverage()` 
+  as this is no longer necessary due to changes to how    
+  [Codecov](https://about.codecov.io/) works.
+  - Add subheaders to the *## Edit the DESCRIPTION file* section for easier navigation
+  - Added sections on:
+    - *Depends*
+    - *Imports*
+    - *Suggests*
+    - *Remotes*
+  - Rename section to make more generalisable: *Create a template GitHub Actions* --> *Enable GitHub Actions*
+  - Rename section to make less ambiguous: *Using GitHub Actions* --> *Deploy GitHub Actions*
+  
+### Bug fixes
+
+* Install `biochis` via `remotes::install_bioc()` 
+  instead of `remotes::install_cran()` (which doesn't work).
+* Fixed typos throughout.
+* Fixed typo `vignette/`-->`vignettes/`
+* Example GHA workflow report expired, so it's weird to reference it in tutorial:
+  - https://github.com/kevinrue/MyBioconductorPackage/runs/6388422844?check_suite_focus=true
+  - Instead, just include a link to the Actions tab.
+  - Rather than saying "The full report is fairly large; only the `ERROR` message is displayed below."
+    just collapse the full report by default.
+* *.github/workflows/build_deploy.yml*: Needed a number of fixes.
+  - pandoc is already included in the Bioconductor docker images, and trying to install it yourself causes problems. 
+  - Even if you were doing this without the Bioc Docker container, 
+    you would have to fix `r-lib/actions/setup-pandoc@master` (which no longer exists) --> `r-lib/actions/setup-pandoc@v2`
+
 ## Version 1.0.0 (2021-07-27)
 
 - Initial definition of the mentorship guidelines.
