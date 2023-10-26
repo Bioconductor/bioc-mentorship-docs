@@ -6,17 +6,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Chapter 6 Making a Bioconductor package | Bioconductor Guidelines for Mentors and Mentees</title>
 <meta name="author" content="Kevin Rue-Albrecht">
-<meta name="description" content="This chapter demonstrates the making of a Bioconductor package using a workflow that includes the CRAN package usethis and the Bioconductor package biocthis. This is just one example of an...">
-<meta name="generator" content="bookdown 0.26 with bs4_book()">
+<meta name="description" content="This chapter demonstrates how to make a Bioconductor package using a workflow that utilises the following R packages: rworkflows (CRAN) usethis (CRAN) biocthis (Bioconductor) This is just one...">
+<meta name="generator" content="bookdown 0.36 with bs4_book()">
 <meta property="og:title" content="Chapter 6 Making a Bioconductor package | Bioconductor Guidelines for Mentors and Mentees">
 <meta property="og:type" content="book">
-<meta property="og:description" content="This chapter demonstrates the making of a Bioconductor package using a workflow that includes the CRAN package usethis and the Bioconductor package biocthis. This is just one example of an...">
+<meta property="og:description" content="This chapter demonstrates how to make a Bioconductor package using a workflow that utilises the following R packages: rworkflows (CRAN) usethis (CRAN) biocthis (Bioconductor) This is just one...">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Chapter 6 Making a Bioconductor package | Bioconductor Guidelines for Mentors and Mentees">
-<meta name="twitter:description" content="This chapter demonstrates the making of a Bioconductor package using a workflow that includes the CRAN package usethis and the Bioconductor package biocthis. This is just one example of an...">
+<meta name="twitter:description" content="This chapter demonstrates how to make a Bioconductor package using a workflow that utilises the following R packages: rworkflows (CRAN) usethis (CRAN) biocthis (Bioconductor) This is just one...">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
-<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.3.1/transition.js"></script><script src="libs/bs3compat-0.3.1/tabs.js"></script><script src="libs/bs3compat-0.3.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.5.1/transition.js"></script><script src="libs/bs3compat-0.5.1/tabs.js"></script><script src="libs/bs3compat-0.5.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
     
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
@@ -97,9 +97,16 @@
 <h1>
 <span class="header-section-number">6</span> Making a Bioconductor package<a class="anchor" aria-label="anchor" href="#bioc-package"><i class="fas fa-link"></i></a>
 </h1>
-<p>This chapter demonstrates the making of a Bioconductor package using a workflow
-that includes the CRAN package <em><a href="https://CRAN.R-project.org/package=usethis">usethis</a></em> and the
-Bioconductor package <em><a href="https://bioconductor.org/packages/3.16/biocthis">biocthis</a></em>.</p>
+<p>This chapter demonstrates how to make a Bioconductor package using a workflow
+that utilises the following R packages:</p>
+<ol style="list-style-type: decimal">
+<li>
+<em><a href="https://CRAN.R-project.org/package=rworkflows">rworkflows</a></em> (CRAN)</li>
+<li>
+<em><a href="https://CRAN.R-project.org/package=usethis">usethis</a></em> (CRAN)</li>
+<li>
+<em><a href="https://bioconductor.org/packages/3.18/biocthis">biocthis</a></em> (Bioconductor)</li>
+</ol>
 <p>This is just one example of an opinionated workflow for making a
 Bioconductor-friendly package, highlighting accessory packages
 with the goal of helping automate the process of creating R packages for
@@ -111,7 +118,7 @@ packages and develop their own personal preferences and templates,
 when working on their subsequent packages.</p>
 <p>Throughout this chapter, this example is used to illustrate essential and
 recommended components for Bioconductor packages, to give readers knowledge
-and information allowing them to develop Bioconductor packages indepedently
+and information allowing them to develop Bioconductor packages independently
 of this workflow, if they so wish.</p>
 <div id="environment" class="section level2" number="6.1">
 <h2>
@@ -123,8 +130,8 @@ Other operating systems may require some adjustments.</p>
 <a href="https://www.rstudio.com/products/rstudio/download/">RStudio Desktop</a>.</p>
 <p>This workflow was written using R version 4.1.2 (2021-11-01) – “Bird Hippie”.</p>
 <p>This workflow starts in the RStudio application, outside of any RStudio project.</p>
-<div class="figure">
-<img src="images/rstudio-initial-state.png" style="width:100.0%" alt=""><p class="caption">Initial state of the RStudio application.</p>
+<div class="float">
+<img src="images/rstudio-initial-state.png" style="width:100.0%" alt="Initial state of the RStudio application."><div class="figcaption">Initial state of the RStudio application.</div>
 </div>
 </div>
 <div id="install-accessory-packages" class="section level2" number="6.2">
@@ -134,36 +141,42 @@ Other operating systems may require some adjustments.</p>
 <p>First, we install the CRAN package <em><a href="https://CRAN.R-project.org/package=remotes">remotes</a></em>, if it is
 not installed yet.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span><span class="op">(</span><span class="st">"remotes"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span>
-<span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span><span class="op">(</span><span class="st">"remotes"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
+<div id="cran-packages" class="section level3" number="6.2.1">
+<h3>
+<span class="header-section-number">6.2.1</span> CRAN packages<a class="anchor" aria-label="anchor" href="#cran-packages"><i class="fas fa-link"></i></a>
+</h3>
 <p>Next, we immediately used the newly installed package to install a number of
 CRAN packages that will be used to develop the new Bioconductor package.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_cran.html">install_cran</a></span><span class="op">(</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>
-        <span class="st">"available"</span>,
-        <span class="st">"BiocManager"</span>,
-        <span class="st">"biocthis"</span>,
-        <span class="st">"devtools"</span>,
-        <span class="st">"knitr"</span>,
-        <span class="st">"pkgdown"</span>,
-        <span class="st">"RefManageR"</span>,
-        <span class="st">"rmarkdown"</span>,
-        <span class="st">"rstudioapi"</span>,
-        <span class="st">"sessioninfo"</span>,
-        <span class="st">"styler"</span>,
-        <span class="st">"usethis"</span>
-    <span class="op">)</span>
-<span class="op">)</span></code></pre></div>
-<p>Next, we install the Bioconductor package <em><a href="https://bioconductor.org/packages/3.16/BiocStyle">BiocStyle</a></em>,
-if it is not installed yet.
-That package will be used for styling the vignettes of the new Bioconductor
-package and linking to other packages.</p>
+<code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_cran.html">install_cran</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span></span>
+<span>        <span class="st">"available"</span>, </span>
+<span>        <span class="st">"devtools"</span>,</span>
+<span>        <span class="st">"knitr"</span>,</span>
+<span>        <span class="st">"pkgdown"</span>,</span>
+<span>        <span class="st">"RefManageR"</span>,</span>
+<span>        <span class="st">"rmarkdown"</span>,</span>
+<span>        <span class="st">"rstudioapi"</span>,</span>
+<span>        <span class="st">"sessioninfo"</span>,</span>
+<span>        <span class="st">"styler"</span>,</span>
+<span>        <span class="st">"usethis"</span>,</span>
+<span>        <span class="st">"rworkflows"</span></span>
+<span>    <span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+</div>
+<div id="bioconductor-packages" class="section level3" number="6.2.2">
+<h3>
+<span class="header-section-number">6.2.2</span> Bioconductor packages<a class="anchor" aria-label="anchor" href="#bioconductor-packages"><i class="fas fa-link"></i></a>
+</h3>
+<p>Next, we install the Bioconductor packages if they are not yet installed.</p>
+<p><em><a href="https://bioconductor.org/packages/3.18/BiocStyle">BiocStyle</a></em> will be used for styling the vignettes
+of the new Bioconductor package and linking to other packages.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocStyle"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-    <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span><span class="op">(</span><span class="st">"BiocStyle"</span><span class="op">)</span>
-<span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_bioc.html">install_bioc</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"biocthis"</span>,<span class="st">"BiocStyle"</span><span class="op">)</span><span class="op">)</span> </span></code></pre></div>
+</div>
 </div>
 <div id="check-if-the-package-name-is-available-on-cran-and-bioconductor" class="section level2" number="6.3">
 <h2>
@@ -179,7 +192,7 @@ to check whether the name that we want to give to the new package is already
 in use in either Bioconductor or CRAN, or has a meaning that we might not be
 aware of.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">available</span><span class="fu">::</span><span class="fu">available</span><span class="op">(</span><span class="st">"MyBioconductorPackage"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">available</span><span class="fu">::</span><span class="fu">available</span><span class="op">(</span><span class="st">"MyBioconductorPackage"</span><span class="op">)</span></span></code></pre></div>
 <p>If prompted whether to report potentially offensive results in the
 Urban Dictionary, type <code>Y</code> or <code>N</code> depending on your preference, and press the
 Return key.</p>
@@ -197,19 +210,51 @@ sub-strings, and acronyms.
 It is up to you to check the contents of those pages and decide whether you
 wish to continue the process with that package name.</p>
 </div>
-<div id="create-a-package-template-with-usethis" class="section level2" number="6.4">
+<div id="create-a-package-template" class="section level2" number="6.4">
 <h2>
-<span class="header-section-number">6.4</span> Create a package template with <code>usethis</code><a class="anchor" aria-label="anchor" href="#create-a-package-template-with-usethis"><i class="fas fa-link"></i></a>
+<span class="header-section-number">6.4</span> Create a package template<a class="anchor" aria-label="anchor" href="#create-a-package-template"><i class="fas fa-link"></i></a>
 </h2>
+<p>Once we are satisfied with the name of your package,
+we can begin creating the package using a template.
+Here, we provide two alternative workflows for creating an R package template:</p>
+<ol style="list-style-type: decimal">
+<li>
+<strong>Using <code>rworkflows</code></strong>: Quick and easy with dynamic autofilling of redundant information.</li>
+<li>
+<strong>Using <code>usethis</code> + <code>biocthis</code></strong>: Requires more manual steps, but enables more extensive cutomisability.</li>
+</ol>
+<div id="using-rworkflows" class="section level3" number="6.4.1">
+<h3>
+<span class="header-section-number">6.4.1</span> Using <code>rworkflows</code><a class="anchor" aria-label="anchor" href="#using-rworkflows"><i class="fas fa-link"></i></a>
+</h3>
+<p><a href="https://github.com/neurogenomics/templateR"><code>templateR</code></a> is an R package template distributed via GitHub and is part of the <a href="https://github.com/neurogenomics/rworkflows"><code>rworkflows</code> suite</a>.</p>
+<p>It aims to automate R package creation as much as possible by filling out the template for you with using information extracted from the <code>DESCRIPTION</code> file. This minimises the amount of time you have to spend entering the same information in manually for each file (e.g. package name/description, documentation site, vignette links). Importantly, it does this dynamically such that if you ever decide to change any of these fields, the updated information will be automatically propagated to all relevant files in your package.</p>
+<p>To create your template, simply navigate to the <a href="https://github.com/neurogenomics/templateR"><code>templateR</code> GitHub repository</a> and click the <em>Use this template</em> button in the upper right, and follow the steps to create a new Github repository:</p>
+<div class="float">
+<img src="images/templateR-create.png" style="width:100.0%" alt="Creating template with templateR"><div class="figcaption">Creating template with templateR</div>
+</div>
+<p>Finally, clone the repo to your local machine.</p>
+<p><strong>How to clone</strong></p>
+<p>In your new repository created from the template,
+click the green <code>[&lt;&gt; Code]</code> button and copying the <strong>HTTPS</strong> URL.
+Then enter <code>git clone &lt;URL&gt;</code> into your command line terminal.
+It should look something like this:</p>
+<pre><code>git clone https://github.com/OwnerName/MyBioconductorPackage.git</code></pre>
+<p>Now you can <a href="https://bookdown.org/daniel_dauber_io/r4np_book/starting-your-r-projects.html">create a project within Rstudio</a> and start working on your new package!</p>
+</div>
+<div id="using-usethis-biocthis" class="section level3" number="6.4.2">
+<h3>
+<span class="header-section-number">6.4.2</span> Using <code>usethis</code> + <code>biocthis</code><a class="anchor" aria-label="anchor" href="#using-usethis-biocthis"><i class="fas fa-link"></i></a>
+</h3>
 <p>When we are satisfied with the name of your package, we use the function
 <code><a href="https://usethis.r-lib.org/reference/create_package.html">usethis::create_package()</a></code> to create a package template.
 In this example, we first change directory to <code>~/Desktop</code>, to initialise the
 directory that contains the new package on the <code>Desktop</code>.
 Instead, you will likely prefer to initialise your package in your own preferred
 directory on your computer.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/getwd.html">setwd</a></span><span class="op">(</span><span class="st">"~/Desktop"</span><span class="op">)</span>
-<span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/create_package.html">create_package</a></span><span class="op">(</span><span class="st">"MyBioconductorPackage"</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html">setwd</a></span><span class="op">(</span><span class="st">"~/Desktop"</span><span class="op">)</span></span>
+<span><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/create_package.html">create_package</a></span><span class="op">(</span><span class="st">"MyBioconductorPackage"</span><span class="op">)</span></span></code></pre></div>
 <p>The R console displays some information as the package template is created.
 In this example, we saw:</p>
 <pre><code>✔ Creating 'MyBioconductorPackage/'
@@ -236,8 +281,8 @@ RoxygenNote: 7.1.2
 ✔ Setting active project to '&lt;no active project&gt;'</code></pre>
 <p>The RStudio application then reloads and opens the RStudio project on the new
 package in a new RStudio application window.</p>
-<div class="figure">
-<img src="images/rstudio-package-initial-state.png" style="width:100.0%" alt=""><p class="caption">Initial state of the RStudio project for the new package.</p>
+<div class="float">
+<img src="images/rstudio-package-initial-state.png" style="width:100.0%" alt="Initial state of the RStudio project for the new package."><div class="figcaption">Initial state of the RStudio project for the new package.</div>
 </div>
 <p>The package template provided by the CRAN package
 <em><a href="https://CRAN.R-project.org/package=usethis">usethis</a></em> includes some of the essential files that make
@@ -258,17 +303,16 @@ other packages (i.e., dependencies) and functions exported by the new package.</
 <li>The essential directory <code>R/</code> - initially empty - is used to store R scripts
 that contain the code of the new package.</li>
 </ul>
-</div>
-<div id="create-template-scripts-using-biocthis" class="section level2" number="6.5">
-<h2>
-<span class="header-section-number">6.5</span> Create template scripts using <code>biocthis</code><a class="anchor" aria-label="anchor" href="#create-template-scripts-using-biocthis"><i class="fas fa-link"></i></a>
-</h2>
+<div id="create-template-scripts" class="section level4" number="6.4.2.1">
+<h4>
+<span class="header-section-number">6.4.2.1</span> Create template scripts<a class="anchor" aria-label="anchor" href="#create-template-scripts"><i class="fas fa-link"></i></a>
+</h4>
 <p>At this point, we use the Bioconductor package
-<em><a href="https://bioconductor.org/packages/3.16/biocthis">biocthis</a></em> to generate some R scripts with the goal of
+<em><a href="https://bioconductor.org/packages/3.18/biocthis">biocthis</a></em> to generate some R scripts with the goal of
 helping automate the process of creating R packages for Bioconductor or making
 them Bioconductor-friendly.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">biocthis</span><span class="fu">::</span><span class="fu">use_bioc_pkg_templates</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">biocthis</span><span class="fu">::</span><span class="fu">use_bioc_pkg_templates</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>The R console display information are a sub-directory <code>dev/</code> and several R
 scripts are created.</p>
 <pre><code>✔ Setting active project to '/Users/kevin/Desktop/MyBioconductorPackage'
@@ -284,10 +328,10 @@ scripts are created.</p>
 • Modify 'dev/04_update.R'</code></pre>
 <p>In the next sections, we will go through those R scripts in turn.</p>
 </div>
-<div id="create-the-r-package" class="section level2" number="6.6">
-<h2>
-<span class="header-section-number">6.6</span> Create the R package<a class="anchor" aria-label="anchor" href="#create-the-r-package"><i class="fas fa-link"></i></a>
-</h2>
+<div id="create-the-r-package" class="section level4" number="6.4.2.2">
+<h4>
+<span class="header-section-number">6.4.2.2</span> Create the R package<a class="anchor" aria-label="anchor" href="#create-the-r-package"><i class="fas fa-link"></i></a>
+</h4>
 <p>Open the file <code>dev/01_create_pkg.R</code>.</p>
 <p>Carefully read the contents of the file, including comments and code, as we have
 run most of that code already in the previous steps.</p>
@@ -296,13 +340,13 @@ directly open the file <code>dev/02_git_github_setup.R</code>.
 We can click on the tab of the file already open in the Source panel of the
 RStudio application, or we can run the last line of code in the script
 <code>dev/01_create_pkg.R</code>.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">rstudioapi</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rstudioapi/man/navigateToFile.html">navigateToFile</a></span><span class="op">(</span><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/proj_utils.html">proj_path</a></span><span class="op">(</span><span class="st">"dev"</span>, <span class="st">"02_git_github_setup.R"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">rstudioapi</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/rstudioapi/reference/navigateToFile.html">navigateToFile</a></span><span class="op">(</span><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/proj_utils.html">proj_path</a></span><span class="op">(</span><span class="st">"dev"</span>, <span class="st">"02_git_github_setup.R"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="exclude-files-from-git-version-control" class="section level2" number="6.7">
-<h2>
-<span class="header-section-number">6.7</span> Exclude files from git version control<a class="anchor" aria-label="anchor" href="#exclude-files-from-git-version-control"><i class="fas fa-link"></i></a>
-</h2>
+<div id="exclude-files-from-git-version-control" class="section level4" number="6.4.2.3">
+<h4>
+<span class="header-section-number">6.4.2.3</span> Exclude files from git version control<a class="anchor" aria-label="anchor" href="#exclude-files-from-git-version-control"><i class="fas fa-link"></i></a>
+</h4>
 <p>In this example, the first step in the script <code>02_git_github_setup.R</code> is
 to add a line in the file <code>.gitignore</code>, declaring that any file ending with the
 extension <code>.Rproj</code> should be ignored from git version control.
@@ -317,17 +361,17 @@ The only purpose of R scripts in that sub-directory is to set up a template for
 the new package on the computer of the package developer.
 When the template is set up, those scripts and the sub-directory can all be
 safely removed.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/use_git_ignore.html">use_git_ignore</a></span><span class="op">(</span><span class="st">"*.Rproj"</span><span class="op">)</span>
-<span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/use_git_ignore.html">use_git_ignore</a></span><span class="op">(</span><span class="st">"dev/"</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/use_git_ignore.html">use_git_ignore</a></span><span class="op">(</span><span class="st">"*.Rproj"</span><span class="op">)</span></span>
+<span><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/use_git_ignore.html">use_git_ignore</a></span><span class="op">(</span><span class="st">"dev/"</span><span class="op">)</span></span></code></pre></div>
 <p>If you wish to visualise the change, you can open the file <code>.gitignore</code>.
 You will see that the last two lines of the file now declare <code>*.Rproj</code> and
 <code>dev/</code>.</p>
 </div>
-<div id="set-up-git" class="section level2" number="6.8">
-<h2>
-<span class="header-section-number">6.8</span> Set up git<a class="anchor" aria-label="anchor" href="#set-up-git"><i class="fas fa-link"></i></a>
-</h2>
+<div id="set-up-git" class="section level4" number="6.4.2.4">
+<h4>
+<span class="header-section-number">6.4.2.4</span> Set up git<a class="anchor" aria-label="anchor" href="#set-up-git"><i class="fas fa-link"></i></a>
+</h4>
 <p>Next, the script gives us the command to set up git version control for the new
 package.</p>
 <p>Version control is fundamental to durable software development.
@@ -337,8 +381,8 @@ on the same package.</p>
 <p>A git repository can be initialised on the command line in a Unix terminal.
 However, the CRAN package <em><a href="https://CRAN.R-project.org/package=usethis">usethis</a></em> provides a function
 to automate this process from the R console.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/use_git.html">use_git</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/use_git.html">use_git</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>In this example, we are prompted whether we wish to commit some of the files
 that were created. We choose the option to consent, and press the Return key
 to confirm.</p>
@@ -368,22 +412,22 @@ Restart now?
 Selection: 3</code></pre>
 <p>Once the RStudio application has restarted, we can see the Git tab in the
 version control panel, and a <code>.git</code> sub-directory in the <code>Files</code> pane.</p>
-<div class="figure">
-<img src="images/rstudio-git-tab.png" style="width:100.0%" alt=""><p class="caption">View of the RStudio application after activating git version control.</p>
+<div class="float">
+<img src="images/rstudio-git-tab.png" style="width:100.0%" alt="View of the RStudio application after activating git version control."><div class="figcaption">View of the RStudio application after activating git version control.</div>
 </div>
 <p>Note:</p>
 <ul>
 <li>The <code>.git</code> sub-directory may not be visible until you enable the option to
 <code>Show Hidden Files</code>.</li>
 </ul>
-<div class="figure">
-<img src="images/rstudio-show-hidden-files.png" style="width:100.0%" alt=""><p class="caption">Show hidden files.</p>
+<div class="float">
+<img src="images/rstudio-show-hidden-files.png" style="width:100.0%" alt="Show hidden files."><div class="figcaption">Show hidden files.</div>
 </div>
 </div>
-<div id="connect-the-git-repository-to-github" class="section level2" number="6.9">
-<h2>
-<span class="header-section-number">6.9</span> Connect the git repository to GitHub<a class="anchor" aria-label="anchor" href="#connect-the-git-repository-to-github"><i class="fas fa-link"></i></a>
-</h2>
+<div id="connect-the-git-repository-to-github" class="section level4" number="6.4.2.5">
+<h4>
+<span class="header-section-number">6.4.2.5</span> Connect the git repository to GitHub<a class="anchor" aria-label="anchor" href="#connect-the-git-repository-to-github"><i class="fas fa-link"></i></a>
+</h4>
 <p>The <a href="https://github.com/">GitHub</a> website provides a platform to build, ship,
 and maintain software, free of charge for public repositories.</p>
 <p>A GitHub repository can be created interactively on the
@@ -395,8 +439,8 @@ declaring URLs for the landing page of the repository, and the web page where
 issues can be reported.
 When prompted whether we wish to commit the changes, we choose the option to
 consent, and press the Return key to confirm.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/use_github.html">use_github</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/use_github.html">use_github</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code>✔ Creating GitHub repository 'kevinrue/MyBioconductorPackage'
 ✔ Setting remote 'origin' to 'git@github.com:kevinrue/MyBioconductorPackage.git'
 ✔ Setting URL field in DESCRIPTION to 'https://github.com/kevinrue/MyBioconductorPackage'
@@ -423,14 +467,51 @@ this chapter.</li>
 </ul>
 <p>Once the command completes,it automatically opens the landing page of the new
 GitHub repository in our default web browser.</p>
-<div class="figure">
-<img src="images/github-landing-page-initial.png" style="width:100.0%" alt=""><p class="caption">Landing page of the GitHub repository.</p>
+<div class="float">
+<img src="images/github-landing-page-initial.png" style="width:100.0%" alt="Landing page of the GitHub repository."><div class="figcaption">Landing page of the GitHub repository.</div>
 </div>
 </div>
-<div id="edit-the-description-file" class="section level2" number="6.10">
+</div>
+</div>
+<div id="edit-the-description-file" class="section level2" number="6.5">
 <h2>
-<span class="header-section-number">6.10</span> Edit the DESCRIPTION file<a class="anchor" aria-label="anchor" href="#edit-the-description-file"><i class="fas fa-link"></i></a>
+<span class="header-section-number">6.5</span> Edit the DESCRIPTION file<a class="anchor" aria-label="anchor" href="#edit-the-description-file"><i class="fas fa-link"></i></a>
 </h2>
+<p>The <code>DESCRIPTION</code> file is essential to any R package and contains metadata about
+the package’s name, description, and software dependencies, etc.</p>
+<p><strong>Bioconductor-specific fields</strong>:</p>
+<p>Bioconductor requires an additional field named <code>biocViews</code>.
+The field must be populated by terms selected from a controlled vocabulary,
+to facilitate the thematic classification of the new package on the Bioconductor
+website.
+The full list of available biocViews can be navigated
+<a href="https://www.bioconductor.org/packages/release/BiocViews.html">here</a>.</p>
+<div id="setup" class="section level3" number="6.5.1">
+<h3>
+<span class="header-section-number">6.5.1</span> Setup<a class="anchor" aria-label="anchor" href="#setup"><i class="fas fa-link"></i></a>
+</h3>
+<div id="using-rworkflows-1" class="section level4" number="6.5.1.1">
+<h4>
+<span class="header-section-number">6.5.1.1</span> Using <code>rworkflows</code><a class="anchor" aria-label="anchor" href="#using-rworkflows-1"><i class="fas fa-link"></i></a>
+</h4>
+<p>If you used the <code>templateR</code> method above for creating the package template,
+you can use the function <code>rworkflows::fill_description()</code>
+to update as many of the fields in the default <code>DESCRIPTION</code> as you prefer.
+Whichever arguments are not specified by the user are automatically
+set to reasonable defaults.</p>
+<p>The only required arguments are:<br>
+* <code>package</code>: The name of your R package.
+* <code>title</code>: The title of your R package.
+* <code>description</code>: The description of your R package.
+* <code>github_owner</code>: The owner of your R package’s GitHub repository
+(you can set this to <code>NA</code> if this is not applicable to your package).</p>
+<p>For more detailed guidance on how to fill out these fields,
+please see <a href="bioc-package.html#package_name">below</a>.</p>
+</div>
+<div id="using-usethis-biocthis-1" class="section level4" number="6.5.1.2">
+<h4>
+<span class="header-section-number">6.5.1.2</span> Using <code>usethis</code> + <code>biocthis</code><a class="anchor" aria-label="anchor" href="#using-usethis-biocthis-1"><i class="fas fa-link"></i></a>
+</h4>
 <p>Open the file <code>dev/03_core_files.R</code> and follow the instructions.</p>
 <p>The first comment in the script recommends to edit the file <code>DESCRIPTION</code>.
 Great sources of information for best practices on that subject are:</p>
@@ -438,20 +519,15 @@ Great sources of information for best practices on that subject are:</p>
 <li><a href="http://r-pkgs.had.co.nz/description.html" class="uri">http://r-pkgs.had.co.nz/description.html</a></li>
 <li><a href="http://contributions.bioconductor.org/description.html" class="uri">http://contributions.bioconductor.org/description.html</a></li>
 </ul>
-<p>Before we start editing any of the fields, we use the function <code>biocthis::use_bioc_description()</code> to add two more fields.</p>
-<p>First, Bioconductor requires an additional field named <code>biocViews</code>.
-The field must be populated by terms selected from a controlled vocabulary,
-to facilitate the thematic classification of the new package on the Bioconductor
-website.
-The full list of available biocViews can be navigated
-<a href="https://www.bioconductor.org/packages/release/BiocViews.html">here</a>.</p>
+<p>Before we start editing any of the fields, we use the function
+<code>biocthis::use_bioc_description()</code> to add two more fields.</p>
 <p>Separately, an optional field named <code>Date</code> can also be added to the file
 <code>DESCRIPTION</code>. If available, that field is used for generating the package
 citation information.</p>
-<p>Both fields are added and automaticall filled bu the function
+<p>Both fields are added and automatically filled by the function
 <code>biocthis::use_bioc_description()</code>.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">biocthis</span><span class="fu">::</span><span class="fu">use_bioc_description</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">biocthis</span><span class="fu">::</span><span class="fu">use_bioc_description</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>When prompted whether to over-write the pre-existing file <code>DESCRIPTION</code>, we
 choose the answer to consent and press the Return key.
 The console then displays the contents of the updated file <code>DESCRIPTION</code>.</p>
@@ -479,15 +555,27 @@ biocViews: Software
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2</code></pre>
+</div>
+</div>
+<div id="package_name" class="section level3" number="6.5.2">
+<h3>
+<span class="header-section-number">6.5.2</span> Package name<a class="anchor" aria-label="anchor" href="#package_name"><i class="fas fa-link"></i></a>
+</h3>
 <p>Now we open the file <code>DESCRIPTION</code> and carefully examine each field.</p>
 <p>First, the field <code>Package</code> already contains the name that we have chosen for our
 new package.</p>
 <pre><code>Package: MyBioconductorPackage</code></pre>
-<p>Note:</p>
+<p><strong>Note</strong>:</p>
 <ul>
 <li>If you decide to change the package name from this point onward, you should be
-mindful of all the other places where you will need to also update that name.</li>
+mindful of all the other places where you will need to also update that name
+(though this is less of a concern when using <code>templateR</code>).</li>
 </ul>
+</div>
+<div id="package-title" class="section level3" number="6.5.3">
+<h3>
+<span class="header-section-number">6.5.3</span> Package title<a class="anchor" aria-label="anchor" href="#package-title"><i class="fas fa-link"></i></a>
+</h3>
 <p>Next, the field <code>Title</code> is the first field that we want to update from the
 default placeholder.
 Note that this field expects a single line in
@@ -497,6 +585,11 @@ In this example, we go with <code>Demonstration of a Bioconductor Package</code>
 In doubt, you can always look at some of your favourite packages for
 inspiration.</p>
 <pre><code>Title: Demonstration of a Bioconductor Package</code></pre>
+</div>
+<div id="package-version" class="section level3" number="6.5.4">
+<h3>
+<span class="header-section-number">6.5.4</span> Package version<a class="anchor" aria-label="anchor" href="#package-version"><i class="fas fa-link"></i></a>
+</h3>
 <p>Next, the field <code>Version</code> must be set to either version <code>0.99.0</code> or any
 version number that is <a href="https://semver.org/">semantically</a> lower than that.
 This is because <code>0.99.0</code> is the version number that is expected in package
@@ -509,9 +602,19 @@ You might want to pick a lower version number, if you wish to
 increment version numbers during your work on the package before your first
 submission to the Bioconductor project (e.g., <code>0.1.0</code> -&gt; <code>0.2.0</code> -&gt; <code>0.2.1</code>).</p>
 <pre><code>Version: 0.99.0</code></pre>
+</div>
+<div id="package-date" class="section level3" number="6.5.5">
+<h3>
+<span class="header-section-number">6.5.5</span> Package date<a class="anchor" aria-label="anchor" href="#package-date"><i class="fas fa-link"></i></a>
+</h3>
 <p>Next, we leave the field <code>Date</code> to the date of today, that was automatically
 filled by the function <code>biocthis::use_bioc_description()</code>.</p>
 <pre><code>Date: 2022-05-10</code></pre>
+</div>
+<div id="package-authors" class="section level3" number="6.5.6">
+<h3>
+<span class="header-section-number">6.5.6</span> Package authors<a class="anchor" aria-label="anchor" href="#package-authors"><i class="fas fa-link"></i></a>
+</h3>
 <p>Next, the field <code>Authors@R</code> must also be changed from the default placeholder
 to provide information about the package developer(s) and maintainer.
 The default template is designed for a single-person project, calling directly
@@ -526,6 +629,11 @@ within a call to the function <code><a href="https://rdrr.io/r/base/c.html">c()<
     c(person("Kevin", "Rue", "Christophe", "kevinrue@users.noreply.github.com",
              role = c("aut", "cre"),
              comment = c(ORCID = "0000-0003-3899-3872")))</code></pre>
+</div>
+<div id="package-description" class="section level3" number="6.5.7">
+<h3>
+<span class="header-section-number">6.5.7</span> Package description<a class="anchor" aria-label="anchor" href="#package-description"><i class="fas fa-link"></i></a>
+</h3>
 <p>Next, the field <code>Description</code> must also be changed to provide a longer
 description of the package, albeit general guidelines recommend to keep the
 length of that field to a single paragraph.
@@ -540,31 +648,114 @@ For instance, in this case we choose to write:</p>
 lines, in a way that each line of the file <code>DESCRIPTION</code> does not exceed 80
 characters, and each line from the second one is indented by four spaces.</li>
 </ul>
+</div>
+<div id="package-license" class="section level3" number="6.5.8">
+<h3>
+<span class="header-section-number">6.5.8</span> Package license<a class="anchor" aria-label="anchor" href="#package-license"><i class="fas fa-link"></i></a>
+</h3>
 <p>Next, the field <code>License</code> declares the licensing choice made by the copyright
 holder of the package.
-Bioconductor packages are typically licensed under <code>Artistic-2.0</code>, although
+Bioconductor packages are often licensed under <code>Artistic-2.0</code>, although
 a number of other choices are commonly accepted for community-contributed
-packages.
-In this example, we leave the <code>Artistic-2.0</code> license automatically set by the
+packages (e.g. <code>GPL-3</code>).</p>
+<p>For help choosing which license is right for your package, please see these resources provided by <a href="https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/licensing-a-repository">GitHub</a> and
+<a href="https://choosealicense.com/">choosealicense.com</a></p>
+<p>In this example, we leave the <code>Artistic-2.0</code> license automatically set by the
 function <code>biocthis::use_bioc_description()</code>.</p>
 <pre><code>License: Artistic-2.0</code></pre>
+</div>
+<div id="package-url-and-bugreports" class="section level3" number="6.5.9">
+<h3>
+<span class="header-section-number">6.5.9</span> Package URL and BugReports<a class="anchor" aria-label="anchor" href="#package-url-and-bugreports"><i class="fas fa-link"></i></a>
+</h3>
 <p>The next two fields of the file are <code>URL</code> and <code>BugReports</code>,
 which were recently added by the function <code><a href="https://usethis.r-lib.org/reference/use_github.html">usethis::use_github()</a></code> and
 subsequently edited by the function <code>biocthis::use_bioc_description()</code>.</p>
-<pre><code>URL: https://github.com/kevinrue/MyBioconductorPackage
-BugReports: https://support.bioconductor.org/t/MyBioconductorPackage</code></pre>
+<pre><code>URL: https://github.com/&lt;OwnerName&gt;/&lt;MyBioconductorPackage&gt;
+BugReports: https://github.com/&lt;OwnerName&gt;/&lt;MyBioconductorPackage&gt;/issues</code></pre>
 <p>Although this demonstration package may never be actually included in the
 Bioconductor repository, we decide to leave the <code>BugReports</code> field to a URL
 directing to the <a href="https://support.bioconductor.org">Bioconductor support site</a>,
 as it is a great source of information from fellow package users and developers.</p>
-<p>Next, we can leave the Bioconductor-specific field <code>biocViews</code> to the value
-<code>Software</code> automatically filled by the function
-<code>biocthis::use_bioc_description()</code>, at least until we add some code to the
-package and determine other terms that best describe our new package.</p>
-<pre><code>biocViews: Software</code></pre>
+</div>
+<div id="package-depends" class="section level3" number="6.5.10">
+<h3>
+<span class="header-section-number">6.5.10</span> Package Depends<a class="anchor" aria-label="anchor" href="#package-depends"><i class="fas fa-link"></i></a>
+</h3>
+<p>The <em>Depends</em> field specifies the system dependencies of the R package.
+At a minimum, you must specify the subversion of R (e.g. <code>R (&gt;=4.2)</code>).</p>
+<p><code>rworkflows::fill_description()</code> automatically fill in the appropriate version of R
+for the current Bioconductor development version.</p>
+<p>You can also call the <code>rworkflows::bioc_r_versions()</code> directly to assist you in determining the appropriate version of R based on the official requirements set for a Bioconductor release.</p>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">versions</span> <span class="op">&lt;-</span> <span class="fu">rworkflows</span><span class="fu">::</span><span class="fu">bioc_r_versions</span><span class="op">(</span>bioc_version <span class="op">=</span> <span class="st">"devel"</span>,</span>
+<span>                                        depth <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="va">versions</span><span class="op">$</span><span class="va">bioc</span> <span class="co"># e.g. 3.17</span></span>
+<span><span class="va">versions</span><span class="op">$</span><span class="va">r</span> <span class="co"># e.g. 4.3</span></span></code></pre></div>
+</div>
+<div id="package-imports" class="section level3" number="6.5.11">
+<h3>
+<span class="header-section-number">6.5.11</span> Package Imports<a class="anchor" aria-label="anchor" href="#package-imports"><i class="fas fa-link"></i></a>
+</h3>
+<p>The <em>Imports</em> field is used to specify other R packages that are required
+for your R package to work.</p>
+<p><code>rworkflows::fill_description()</code> automatically infers this field based on the function calls within your R package’s code.</p>
+<p>You can also call the <code>rworkflows::infer_deps()</code> directly to have more refined control over which packages get assigned to this field, including the ability to manually specify certain Imports via the <code>imports=</code> argument.</p>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">rworkflows</span><span class="fu">::</span><span class="fu">infer_deps</span><span class="op">(</span>which <span class="op">=</span> <span class="st">"Imports"</span>,</span>
+<span>                       imports <span class="op">=</span> <span class="st">"BiocGenerics"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div id="package-suggests" class="section level3" number="6.5.12">
+<h3>
+<span class="header-section-number">6.5.12</span> Package Suggests<a class="anchor" aria-label="anchor" href="#package-suggests"><i class="fas fa-link"></i></a>
+</h3>
+<p>The <em>Suggests</em> field is used to specify other R packages that are used infrequently within your R packages. The big difference between <em>Suggests</em> and <em>Imports</em> is that packages under <em>Imports</em> will be installed by default when users install your package, while packages under <em>Suggests</em> will not (unless otherwise specified, e.g. <code>remotes::install_github(..., dependencies = TRUE)</code>).</p>
+<p><code>rworkflows::fill_description()</code> automatically infers this field based on the function calls within your R package’s code.</p>
+<p>You can also call the <code>rworkflows::infer_deps()</code> directly to have more refined control over which packages get assigned to this field, including the ability to manually specify certain Suggests via the <code>suggests=</code> argument.</p>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">rworkflows</span><span class="fu">::</span><span class="fu">infer_deps</span><span class="op">(</span>which <span class="op">=</span> <span class="st">"Suggests"</span>,</span>
+<span>                       suggests <span class="op">=</span> <span class="st">"htmltools"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div id="package-remotes" class="section level3" number="6.5.13">
+<h3>
+<span class="header-section-number">6.5.13</span> Package Remotes<a class="anchor" aria-label="anchor" href="#package-remotes"><i class="fas fa-link"></i></a>
+</h3>
+<p><em>Remotes</em> is a field that specifies where R package dependencies that are not in standard repositories like CRAN or Bioconductor can be installed from.</p>
+<p>This can be helpful in several scenarios:
+1. Your package requires a development version of a package with bug fixes
+that have not yet been deployed to Bioconductor/CRAN.
+2. Your package requires an R package that is exclusively distributed
+through GitHub or some other non-standard R package distributor.</p>
+<p>Optionally, you can include the <code>@&lt;branch&gt;</code> modifier at the end of the remote
+to specify a particular branch of the package’s GitHub repo to install from (e.g. <code>@master</code>, <code>@devel</code>).</p>
+<pre><code>Remotes:
+  github::lawremi/rtracklayer@master</code></pre>
+<p>:warning: <strong>NOTE</strong>: :warning:</p>
+<p>The <em>Remotes</em> field should NOT be used for packages that you plan to release on standard R package repositories like Bioconductor or CRAN as the inclusion of this field will generate an error during code checks. Nevertheless, we describe this field here for comprehensiveness, and because it may be helpful to developers during early stages of creating their R package, or for those who distribute their R packages exclusively through GitHub.</p>
+</div>
+<div id="package-biocviews" class="section level3" number="6.5.14">
+<h3>
+<span class="header-section-number">6.5.14</span> Package biocViews<a class="anchor" aria-label="anchor" href="#package-biocviews"><i class="fas fa-link"></i></a>
+</h3>
+<p><code>bioViews</code> are a series of standardised terms used for describing Bioconductor packages.</p>
+<p>You can manually browse through the different options available for the <code>bioViews</code> by checking the <a href="https://www.bioconductor.org/packages/release/BiocViews.html">Bioconductor website here</a>.</p>
+<p>Alternatively, you can fill this out automatically using <code>rworkflows::infer_biocviews()</code>,
+which automatically scans through your R package’s code and infers the most appropriate <code>biocViews</code> terms. Internally, this calls the <code>biocViews::recommendBiocViews</code> function to infer these terms. This is the default strategy employed by <code>rworkflows::fill_description()</code>.</p>
+<p>Here is an example of what a filled out <code>biocViews</code> field might look like:</p>
+<pre><code>biocViews: Software Genetics Transcriptomics</code></pre>
+</div>
+<div id="package-encoding" class="section level3" number="6.5.15">
+<h3>
+<span class="header-section-number">6.5.15</span> Package Encoding<a class="anchor" aria-label="anchor" href="#package-encoding"><i class="fas fa-link"></i></a>
+</h3>
 <p>Next, the field <code>Encoding</code> can usually be left at the default value.
 In this example, this is <code>UTF-8</code>.</p>
 <pre><code>Encoding: UTF-8</code></pre>
+</div>
+<div id="package-roxygen-and-roxygennote" class="section level3" number="6.5.16">
+<h3>
+<span class="header-section-number">6.5.16</span> Package Roxygen and RoxygenNote<a class="anchor" aria-label="anchor" href="#package-roxygen-and-roxygennote"><i class="fas fa-link"></i></a>
+</h3>
 <p>Finally, the fields <code>Roxygen</code> and <code>RoxygenNote</code> can usually be left to their
 default value.
 In this example, those were <code>list(markdown = TRUE)</code> and <code>7.1.2</code>, respectively.
@@ -572,6 +763,11 @@ The former is a list of options passed to the CRAN package
 <em><a href="https://CRAN.R-project.org/package=roxygen2">roxygen2</a></em> – used to generate manual pages – while
 the latter tracks the version of <code>BiocStyle::CRANpkg("roxygen2")</code> that was last
 used to manage the documentation in this particular Bioconductor package.</p>
+</div>
+<div id="summary" class="section level3" number="6.5.17">
+<h3>
+<span class="header-section-number">6.5.17</span> Summary<a class="anchor" aria-label="anchor" href="#summary"><i class="fas fa-link"></i></a>
+</h3>
 <p>With that, we have finished out first round of edits to the file <code>DESCRIPTION</code>.
 Importantly, we have highlighted many of the fields in this file that are prone
 to regular updates as the package continues to be developed:</p>
@@ -583,25 +779,48 @@ to mark the release date of each version of the package.</li>
 or new contributors to the package.</li>
 <li>the <code>Description</code> field can be updated to refine information about the
 package, for instance as new functionality is added.</li>
-<li>the <code>BugReports</code> field can be updated when the package is acccepted in the
+<li>the <code>BugReports</code> field can be updated when the package is accepted in the
 Bioconductor repository.</li>
 <li>the <code>biocViews</code> field can be updated to refine the list of terms used to
 thematically classify the package in the Bioconductor repository.</li>
 </ul>
 </div>
-<div id="create-the-readme-file" class="section level2" number="6.11">
+</div>
+<div id="create-the-readme-file" class="section level2" number="6.6">
 <h2>
-<span class="header-section-number">6.11</span> Create the README file<a class="anchor" aria-label="anchor" href="#create-the-readme-file"><i class="fas fa-link"></i></a>
+<span class="header-section-number">6.6</span> Create the README file<a class="anchor" aria-label="anchor" href="#create-the-readme-file"><i class="fas fa-link"></i></a>
 </h2>
 <p>Most code repositories include a file named <code>README.md</code>, that often provides
 useful information to new users, such as instructions to install the package,
 a brief showcase of the package functionality, or preferences for citing the
 package.</p>
+<div id="using-rworkflows-2" class="section level3" number="6.6.1">
+<h3>
+<span class="header-section-number">6.6.1</span> Using <code>rworkflows</code><a class="anchor" aria-label="anchor" href="#using-rworkflows-2"><i class="fas fa-link"></i></a>
+</h3>
+<p>If using the <code>templateR</code> R package template, a <code>README.Rmd</code> is already included.
+This file automatically extracts relevant information from the <code>DESCRIPTION</code> file
+(e.g. package name, package title, GitHub URL) and fills the README accordingly.
+This includes links to the documentation website, installation instructions, and citation information.</p>
+<p>To update the resulting <code>README.md</code> file, simply <code>knit</code> the <code>README.Rmd</code> file
+(after making any additional changes you would like).
+For further details, please see the <a href="bioc-package.html#build_readme"><strong>Build README</strong></a> section.</p>
+<p>If you didn’t use the <code>templateR</code> template, you can still generate the dynamically
+autofilled <code>README.Rmd</code> using <code>rworkflows::use_readme()</code>.</p>
+</div>
+<div id="using-usethis-biocthis-2" class="section level3" number="6.6.2">
+<h3>
+<span class="header-section-number">6.6.2</span> Using <code>usethis</code> + <code>biocthis</code><a class="anchor" aria-label="anchor" href="#using-usethis-biocthis-2"><i class="fas fa-link"></i></a>
+</h3>
 <p>In this example, we use function <code>biocthis::use_bioc_readme_rmd()</code> to generate
 a template R Markdown file named <code>README.Rmd</code>, that we will adapt to our own
 new package before compiling it to a regular Markdown file <code>README.md</code>.</p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">biocthis</span><span class="fu">::</span><span class="fu">use_bioc_readme_rmd</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<div id="setup-1" class="section level4" number="6.6.2.1">
+<h4>
+<span class="header-section-number">6.6.2.1</span> Setup<a class="anchor" aria-label="anchor" href="#setup-1"><i class="fas fa-link"></i></a>
+</h4>
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">biocthis</span><span class="fu">::</span><span class="fu">use_bioc_readme_rmd</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code>✔ Writing 'README.Rmd'
 ✔ Adding '^README\\.Rmd$' to '.Rbuildignore'
 • Modify 'README.Rmd'
@@ -611,29 +830,44 @@ When the command completes, the file is automatically opened in the Source panel
 of the RStudio application, where we can carefully read and edit it as needed.</p>
 <p>We see that the initial template contains code that we can expect to fail at
 this point in time.</p>
+</div>
+<div id="installation-instructions" class="section level4" number="6.6.2.2">
+<h4>
+<span class="header-section-number">6.6.2.2</span> Installation instructions<a class="anchor" aria-label="anchor" href="#installation-instructions"><i class="fas fa-link"></i></a>
+</h4>
 <p>First, some of the instructions in the section <code>## Installation instructions</code>
 clearly assume that our new package can be obtained and installed from the
 Bioconductor repository.</p>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span><span class="op">(</span><span class="st">"MyBioconductorPackage"</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="st"><a href="https://bioconductor.github.io/BiocManager/">"BiocManager"</a></span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html">install</a></span><span class="op">(</span><span class="st">"MyBioconductorPackage"</span><span class="op">)</span></span></code></pre></div>
 <p>This is obviously not the case yet, and those instructions would cause an error
 for anyone attempting to run that code.
 While we could decide to remove those currently invalid instructions, it is
 acceptable to keep them as a placeholder, as they indicate our intention to
 submit that package to the Bioconductor repository, and those command will be
 valid when the package is accepted and included in the Bioconductor repository.</p>
+<p>In the meantime, you can provide alternative instructions
+to install you package directly from GitHub
+(where “OwnerName” is the name of the account in which the GitHub repo resides):</p>
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="st"><a href="https://remotes.r-lib.org">"remotes"</a></span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"OwnerName/MyBioconductorPackage"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div id="example" class="section level4" number="6.6.2.3">
+<h4>
+<span class="header-section-number">6.6.2.3</span> Example<a class="anchor" aria-label="anchor" href="#example"><i class="fas fa-link"></i></a>
+</h4>
 <p>Similarly, the section <code>## Example</code> demonstrates how to load the package, as
 well as running some code that is currently unrelated to our new package.</p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st">"MyBioconductorPackage"</span><span class="op">)</span>
-<span class="va">...</span>
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">cars</span><span class="op">)</span>
-<span class="va">...</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">pressure</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st">"MyBioconductorPackage"</span><span class="op">)</span></span>
+<span><span class="co"># ...</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">cars</span><span class="op">)</span></span>
+<span><span class="co"># ...</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">pressure</span><span class="op">)</span></span></code></pre></div>
 <p>Since our package does not contain any code yet, we do not have any code to
 demonstrate the functionality of the package itself.
 Again, it is acceptable to keep that part of the template as a placeholder and a
@@ -643,11 +877,16 @@ demonstrate how to use the package.</p>
 not in place yet.
 In this example, we choose to keep this template file exactly as it was
 generated, as there is nothing that needs urgent attention or editing.</p>
+</div>
+<div id="build_readme" class="section level4" number="6.6.2.4">
+<h4>
+<span class="header-section-number">6.6.2.4</span> Build README<a class="anchor" aria-label="anchor" href="#build_readme"><i class="fas fa-link"></i></a>
+</h4>
 <p>Following the next set of instructions in the script <code>03_core_files.R</code>, we use
 the function <code><a href="https://devtools.r-lib.org/reference/build_rmd.html">devtools::build_readme()</a></code> to compile the R Markdown file
 <code>README.Rmd</code> into a Markdown file <code>README.md</code>.</p>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/build_rmd.html">build_readme</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/build_rmd.html">build_readme</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code>ℹ Installing MyBioconductorPackage in temporary library
 ℹ Building /Users/kevin/Desktop/MyBioconductorPackage/README.Rmd
 Loading required namespace: MyBioconductorPackage</code></pre>
@@ -664,17 +903,19 @@ be automatically executed, with the results embedded directly into the file <cod
 All that we need to remember is to re-compile the file <code>README.md</code> every time
 that we update the source file <code>README.Rmd</code>.</p>
 </div>
-<div id="create-the-news-file" class="section level2" number="6.12">
+</div>
+</div>
+<div id="create-the-news-file" class="section level2" number="6.7">
 <h2>
-<span class="header-section-number">6.12</span> Create the NEWS file<a class="anchor" aria-label="anchor" href="#create-the-news-file"><i class="fas fa-link"></i></a>
+<span class="header-section-number">6.7</span> Create the NEWS file<a class="anchor" aria-label="anchor" href="#create-the-news-file"><i class="fas fa-link"></i></a>
 </h2>
 <p>R packages should include a file named <code>NEWS</code> to keep track of changes to the
 code from one version to the next.
 A valid alternative is the the file <code>NEWS.md</code>.</p>
 <p>In this example, we use the function <code>biocthis::use_bioc_news_md()</code> to create
 a template file that we can examine and edit as needed.</p>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">biocthis</span><span class="fu">::</span><span class="fu">use_bioc_news_md</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">biocthis</span><span class="fu">::</span><span class="fu">use_bioc_news_md</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>The R console displays some information as the file <code>NEWS.md</code> is created.
 When the command completes, the file is automatically opened in the Source panel
 of the RStudio application.</p>
@@ -709,9 +950,9 @@ For future reference, the sections used in the initial template were:</p>
 <p>Those sections cover most of the situations, but you are free to use different
 section titles that may better fit your needs.</p>
 </div>
-<div id="create-a-bioconductor-styled-code-of-conduct" class="section level2" number="6.13">
+<div id="create-a-bioconductor-styled-code-of-conduct" class="section level2" number="6.8">
 <h2>
-<span class="header-section-number">6.13</span> Create a Bioconductor-styled code of conduct<a class="anchor" aria-label="anchor" href="#create-a-bioconductor-styled-code-of-conduct"><i class="fas fa-link"></i></a>
+<span class="header-section-number">6.8</span> Create a Bioconductor-styled code of conduct<a class="anchor" aria-label="anchor" href="#create-a-bioconductor-styled-code-of-conduct"><i class="fas fa-link"></i></a>
 </h2>
 <p>The Bioconductor project declares a code of conduct that community members are
 expected to respect when participating in community events and communicating
@@ -719,8 +960,8 @@ on community platforms (e.g., support site, Slack workspace).</p>
 <p>In this example, we use the function <code>biocthis::use_bioc_coc()</code> to generate
 a template file indicating that our new package subscribes to that code of
 conduct.</p>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">biocthis</span><span class="fu">::</span><span class="fu">use_bioc_coc</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">biocthis</span><span class="fu">::</span><span class="fu">use_bioc_coc</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>The R console displays information as files are created and edited.
 In particular, when the command completes, our clipboard contains some text
 that we can add to the file <code>README.Rmd</code>.</p>
@@ -736,8 +977,8 @@ that we can add to the file <code>README.Rmd</code>.</p>
 clipboard at the end of the file.
 Importantly, we remember to re-compile this file <code>README.Rmd</code> to update the
 target file <code>README.md</code>.</p>
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/build_rmd.html">build_readme</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/build_rmd.html">build_readme</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>From the information displayed in the R console, we also learn that a
 sub-directory named <code>.github</code> was created, and a file named <code>CODE_OF_CONDUCT.md</code>
 was created within that new sub-directory.</p>
@@ -762,17 +1003,17 @@ Thank you!</code></pre>
 <p>In this example, we decide to keep the contents of the template file as they
 are.</p>
 </div>
-<div id="create-a-guide-for-contributions" class="section level2" number="6.14">
+<div id="create-a-guide-for-contributions" class="section level2" number="6.9">
 <h2>
-<span class="header-section-number">6.14</span> Create a guide for contributions<a class="anchor" aria-label="anchor" href="#create-a-guide-for-contributions"><i class="fas fa-link"></i></a>
+<span class="header-section-number">6.9</span> Create a guide for contributions<a class="anchor" aria-label="anchor" href="#create-a-guide-for-contributions"><i class="fas fa-link"></i></a>
 </h2>
 <p>Optionally, R packages are welcome to include a file <code>.github/CONTRIBUTING.md</code>.
 That file is used to inform potential contributors to the package of our
 preferences to receive and handle such contributions.</p>
 <p>In this example, we use the function <code><a href="https://usethis.r-lib.org/reference/tidyverse.html">usethis::use_tidy_contributing()</a></code> to set
 up a template file that we can examine and edit as needed.</p>
-<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/tidyverse.html">use_tidy_contributing</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/tidyverse.html">use_tidy_contributing</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>The R console displays information as the file <code>.github/CONTRIBUTING.md</code> is
 created.</p>
 <pre><code>✔ Writing '.github/CONTRIBUTING.md'</code></pre>
@@ -781,9 +1022,9 @@ carefully inspect the one that is create when you run the command above, and
 edit it as needed.
 In this example, we keep the contents of the template file as they are.</p>
 </div>
-<div id="create-a-guide-for-getting-support" class="section level2" number="6.15">
+<div id="create-a-guide-for-getting-support" class="section level2" number="6.10">
 <h2>
-<span class="header-section-number">6.15</span> Create a guide for getting support<a class="anchor" aria-label="anchor" href="#create-a-guide-for-getting-support"><i class="fas fa-link"></i></a>
+<span class="header-section-number">6.10</span> Create a guide for getting support<a class="anchor" aria-label="anchor" href="#create-a-guide-for-getting-support"><i class="fas fa-link"></i></a>
 </h2>
 <p>Another optional file that may be added to Bioconductor packages is
 <code>.github/SUPPORT.md</code>.
@@ -791,8 +1032,8 @@ That file is used to inform users of the package about sources of information
 and help when they experience difficulties while using the package.</p>
 <p>In this example, we use the function <code>biocthis::use_bioc_support()</code> to set
 up a template file that we can examine and edit as needed.</p>
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">biocthis</span><span class="fu">::</span><span class="fu">use_bioc_support</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">biocthis</span><span class="fu">::</span><span class="fu">use_bioc_support</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>The R console displays information as the file <code>.github/SUPPORT.md</code> is
 created.</p>
 <pre><code>✔ Writing '.github/SUPPORT.md'</code></pre>
@@ -801,9 +1042,9 @@ carefully inspect the one that is create when you run the command above, and
 edit it as needed.
 In this example, we keep the contents of the template file as they are.</p>
 </div>
-<div id="create-a-github-issue-template" class="section level2" number="6.16">
+<div id="create-a-github-issue-template" class="section level2" number="6.11">
 <h2>
-<span class="header-section-number">6.16</span> Create a GitHub issue template<a class="anchor" aria-label="anchor" href="#create-a-github-issue-template"><i class="fas fa-link"></i></a>
+<span class="header-section-number">6.11</span> Create a GitHub issue template<a class="anchor" aria-label="anchor" href="#create-a-github-issue-template"><i class="fas fa-link"></i></a>
 </h2>
 <p>Bioconductor packages maintained on <a href="https://github.com">GitHub</a>
 benefit of a web page for reporting issues about the package, typically
@@ -813,16 +1054,39 @@ provided by this package.</p>
 decide what information they think is sufficient to describe their issue.
 GitHub repositories have the possibility of including template forms designed to
 guide users in identifying and reporting all the information relevant to their
-issue.
-Useful information often involves a minimal reproducible example, including
-a small data set that is either publicly available or simulated by some code,
+issue.</p>
+<p>Instead, can be helpful (to both developers and users)
+to provide users with a template for Issues.
+Useful information often involves a minimal reproducible example,
+including a small data set that is either publicly available or simulated by some code,
 alongside the code that is either throwing an error, or producing an
 unexpected output.</p>
+<div id="using-rworkflows-3" class="section level3" number="6.11.1">
+<h3>
+<span class="header-section-number">6.11.1</span> Using <code>rworkflows</code><a class="anchor" aria-label="anchor" href="#using-rworkflows-3"><i class="fas fa-link"></i></a>
+</h3>
+<p><code>rworkflows::use_issue_template()</code> provides several pre-created Issues templates,
+which it will copy into the correct subfolder structure for you. Templates include:</p>
+<ol style="list-style-type: decimal">
+<li>
+<em>bug_report.md</em>: A guide for users on how to report bugs in a way that
+is designed to minimise miscommunications and back-and-forth troubleshooting.</li>
+<li>
+<em>feature_request.md</em>: A standard template for users to request
+new or expanded features within your R package.</li>
+</ol>
+<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">rworkflows</span><span class="fu">::</span><span class="fu">use_issue_template</span><span class="op">(</span>templates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"bug_report.md"</span>, <span class="st">"feature_request.md"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div id="using-usethis-biocthis-3" class="section level3" number="6.11.2">
+<h3>
+<span class="header-section-number">6.11.2</span> Using <code>usethis</code> + <code>biocthis</code><a class="anchor" aria-label="anchor" href="#using-usethis-biocthis-3"><i class="fas fa-link"></i></a>
+</h3>
 <p>In this example, we use the function <code>biocthis::use_bioc_issue_template()</code>
 to create a new sub-directory <code>.github/ISSUE_TEMPLATE</code> and a template file
 <code>issue_template.md</code> within that new sub-directory.</p>
-<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">biocthis</span><span class="fu">::</span><span class="fu">use_bioc_issue_template</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">biocthis</span><span class="fu">::</span><span class="fu">use_bioc_issue_template</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>The R console displays some information as directories and files are created.
 When the command completes, we can open the newly created file, to examine
 and edit it as needed.</p>
@@ -830,18 +1094,32 @@ and edit it as needed.</p>
 ✔ Writing '.github/ISSUE_TEMPLATE/issue_template.md'</code></pre>
 <p>In this example, we decide to keep the original contents as they are.</p>
 </div>
-<div id="create-a-citation-template" class="section level2" number="6.17">
+</div>
+<div id="create-a-citation-template" class="section level2" number="6.12">
 <h2>
-<span class="header-section-number">6.17</span> Create a CITATION template<a class="anchor" aria-label="anchor" href="#create-a-citation-template"><i class="fas fa-link"></i></a>
+<span class="header-section-number">6.12</span> Create a CITATION template<a class="anchor" aria-label="anchor" href="#create-a-citation-template"><i class="fas fa-link"></i></a>
 </h2>
 <p>Optionally, R packages can contain a file <code>inst/CITATION</code>, that provides
 information encouraging and guiding users wishing to cite an article or book
 related to the package.</p>
+<div id="using-rworkflows-4" class="section level3" number="6.12.1">
+<h3>
+<span class="header-section-number">6.12.1</span> Using <code>rworkflows</code><a class="anchor" aria-label="anchor" href="#using-rworkflows-4"><i class="fas fa-link"></i></a>
+</h3>
+<p>A standard <code>CITATION</code> file is included within the <code>inst</code> subdirectory
+of the <code>templateR</code> R package template.
+Simply update this file with your R package’s citation information
+in any text editor (including Rstudio).</p>
+</div>
+<div id="using-usethis-biocthis-4" class="section level3" number="6.12.2">
+<h3>
+<span class="header-section-number">6.12.2</span> Using <code>usethis</code> + <code>biocthis</code><a class="anchor" aria-label="anchor" href="#using-usethis-biocthis-4"><i class="fas fa-link"></i></a>
+</h3>
 <p>In this example, we use the function <code>biocthis::use_bioc_citation()</code>
 to create a new sub-directory <code>inst</code> and a template file <code>CITATION</code>
 within that new sub-directory.</p>
-<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">biocthis</span><span class="fu">::</span><span class="fu">use_bioc_citation</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">biocthis</span><span class="fu">::</span><span class="fu">use_bioc_citation</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>The R console displays some information as directories and files are created.
 When the command completes, the file <code>inst/CITATION</code> is automatically opened
 in the Source panel of the RStudio application where we can examine and edit
@@ -855,20 +1133,49 @@ also the title of the package that we declared in the file <code>DESCRIPTION</co
 the package.
 As a consequence, we need to re-compile the file <code>README.Rmd</code> to update the file
 <code>README.md</code>.</p>
-<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/build_rmd.html">build_readme</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/build_rmd.html">build_readme</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>When the command completes, we can take the time to open the file <code>README.md</code>
 and examine the new contents in the section <code>## Citation</code>.</p>
 </div>
-<div id="add-badges-to-the-readme-file" class="section level2" number="6.18">
+</div>
+<div id="add-badges-to-the-readme-file" class="section level2" number="6.13">
 <h2>
-<span class="header-section-number">6.18</span> Add badges to the README file<a class="anchor" aria-label="anchor" href="#add-badges-to-the-readme-file"><i class="fas fa-link"></i></a>
+<span class="header-section-number">6.13</span> Add badges to the README file<a class="anchor" aria-label="anchor" href="#add-badges-to-the-readme-file"><i class="fas fa-link"></i></a>
 </h2>
 <p>Optionally, status badges can be added to the <code>README.Rmd</code> file, and displayed
 in the <code>README.md</code> file.</p>
+<div id="using-rworkflows-5" class="section level3" number="6.13.1">
+<h3>
+<span class="header-section-number">6.13.1</span> Using <code>rworkflows</code><a class="anchor" aria-label="anchor" href="#using-rworkflows-5"><i class="fas fa-link"></i></a>
+</h3>
+<p><code>rworkflows::use_badges()</code> makes generating many different types of badges at once very easy by wrapping them into a single R function. Which badges are included is fully customisable through arguments. This means that you don’t have to worry about manually updating badges each time some aspect of your package changes.</p>
+<p>It can also generate code to display images like hex stickers within GitHub markdown files (e.g. <code>README.md</code>). By default, it searches for a hex sticker named <code>inst/hex/hex.png</code> within the GitHub repository, you can can also specify a custom path by supplying <code>add_hex</code> with a character string instead (e.g. <code>add_hex="path/to/mysticker.png"</code>). If no such hex sticker exists, this step will be gracefully skipped.</p>
+<p>Here, the <code>ref</code> arg refers to the owner/name of your R package’s GitHub repository.
+See <code>?rworkflows::use_badges</code> for a full list of all arguments and a description of each one.</p>
+<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">rworkflows</span><span class="fu">::</span><span class="fu">use_badges</span><span class="op">(</span>ref <span class="op">=</span> <span class="st">"OwnerName/MyBioconductorPackage"</span>,</span>
+<span>                       add_doi <span class="op">=</span> <span class="st">"10.1111/2041-210X.12628"</span>,</span>
+<span>                       add_lifecycle <span class="op">=</span> <span class="st">"experimental"</span>,</span>
+<span>                       add_hex <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                       add_commit <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                       add_github_version <span class="op">=</span> <span class="cn">TRUE</span>, </span>
+<span>                       add_bioc_release <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                       add_bioc_download_rank <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                       add_bioc_download_month <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                       add_actions <span class="op">=</span> <span class="st">"rworkflows"</span>, </span>
+<span>                       add_codecov <span class="op">=</span> <span class="cn">TRUE</span>, </span>
+<span>                       add_codecov_graphs <span class="op">=</span> <span class="st">"icicle"</span>,</span>
+<span>                       add_authors <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>                       <span class="op">)</span></span></code></pre></div>
+</div>
+<div id="using-usethis-biocthis-5" class="section level3" number="6.13.2">
+<h3>
+<span class="header-section-number">6.13.2</span> Using <code>usethis</code> + <code>biocthis</code><a class="anchor" aria-label="anchor" href="#using-usethis-biocthis-5"><i class="fas fa-link"></i></a>
+</h3>
 <p>Lifecycle badges are popular to inform package users about the level of maturity
 that they can expect from the package.
-Packages in the earliest stages of developement – as in our current
+Packages in the earliest stages of development – as in our current
 example – tend to be updated frequently, as new experimental functionality is
 regularly added, while bugs are being identified and fixed.
 Conversely, package at later stages of development tend to be more stable,
@@ -877,16 +1184,16 @@ relatively fixed set of best practices.</p>
 <p>In this example, we use the function <code><a href="https://usethis.r-lib.org/reference/badges.html">usethis::use_lifecycle_badge()</a></code> to declare
 that our new package is still at an early stage of development and should be
 considered with care by our users.</p>
-<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/badges.html">use_lifecycle_badge</a></span><span class="op">(</span><span class="st">"Experimental"</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/badges.html">use_lifecycle_badge</a></span><span class="op">(</span><span class="st">"Experimental"</span><span class="op">)</span></span></code></pre></div>
 <p>The R console displays some information as the file <code>README.Rmd</code> is edited to
 embed the new badge.</p>
 <pre><code>✔ Adding Lifecycle: experimental badge to 'README.Rmd'
 • Re-knit 'README.Rmd'</code></pre>
 <p>As a consequence of the update to the file <code>README.Rmd</code>, we need to re-compile
 that file to apply the changes to the file <code>README.md</code>.</p>
-<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/build_rmd.html">build_readme</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/build_rmd.html">build_readme</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>When the command completes, we can take the time to open the file <code>README.md</code>
 and examine the new line in the badges section.</p>
 <pre><code>&lt;!-- badges: start --&gt;
@@ -894,18 +1201,18 @@ and examine the new line in the badges section.</p>
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 &lt;!-- badges: end --&gt;</code></pre>
-<p>The next command in the script <code>03_core_files.R</code> demonstrates the function <code><a href="https://usethis.r-lib.org/reference/github_actions.html">usethis::use_github_actions_badge()</a></code>.</p>
+<p>The next command in the script <code>03_core_files.R</code> demonstrates the function <code><a href="https://usethis.r-lib.org/reference/use_github_actions_badge.html">usethis::use_github_actions_badge()</a></code>.</p>
 <p><a href="https://github.com/features/actions">GitHub Actions</a> is a optional
 functionality of the GitHub website that makes it easy to automate workflows
 related to software development, including regular building, testing, and
 deployment of the code hosted in GitHub repositories.</p>
-<p>In this example, we use the function <code><a href="https://usethis.r-lib.org/reference/github_actions.html">usethis::use_github_actions_badge()</a></code> to
+<p>In this example, we use the function <code><a href="https://usethis.r-lib.org/reference/use_github_actions_badge.html">usethis::use_github_actions_badge()</a></code> to
 add a badge that will display the result of a GitHub Actions workflow for our
 new package.
 We use the first argument <code>"R-CMD-check-bioc"</code> to declare the name of the
 GitHub Actions workflow.</p>
-<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/github_actions.html">use_github_actions_badge</a></span><span class="op">(</span><span class="st">"R-CMD-check-bioc"</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/use_github_actions_badge.html">use_github_actions_badge</a></span><span class="op">(</span><span class="st">"R-CMD-check-bioc"</span><span class="op">)</span></span></code></pre></div>
 <p>The R console displays some information as the file <code>README.Rmd</code> is edited to
 embed the new badge.</p>
 <pre><code>✔ Setting active project to '/Users/kevin/Desktop/MyBioconductorPackage'
@@ -913,8 +1220,8 @@ embed the new badge.</p>
 • Re-knit 'README.Rmd'</code></pre>
 <p>The last message reminds us to re-compile the file <code>README.Rmd</code> to apply the
 update to the file <code>README.md</code>.</p>
-<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/build_rmd.html">build_readme</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/build_rmd.html">build_readme</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>Note:</p>
 <ul>
 <li>At the moment, the GitHub Actions workflow itself is not defined.
@@ -923,17 +1230,18 @@ This is entirely normal and acceptable, as the functionality of the package
 itself is in no way impacted by the contents of the file <code>README.md</code>.</li>
 </ul>
 </div>
-<div id="enable-unit-tests" class="section level2" number="6.19">
+</div>
+<div id="enable-unit-tests" class="section level2" number="6.14">
 <h2>
-<span class="header-section-number">6.19</span> Enable unit tests<a class="anchor" aria-label="anchor" href="#enable-unit-tests"><i class="fas fa-link"></i></a>
+<span class="header-section-number">6.14</span> Enable unit tests<a class="anchor" aria-label="anchor" href="#enable-unit-tests"><i class="fas fa-link"></i></a>
 </h2>
 <p>Separately from the code that create new functionality in a package,
 unit tests allow package developers to write additional code that invokes
 functions defined in the package, and verifies that they produce the expected
 results in given scenarios.</p>
 <p>In this example, we use the function <code><a href="https://usethis.r-lib.org/reference/use_testthat.html">usethis::use_testthat()</a></code></p>
-<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/use_testthat.html">use_testthat</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb65"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/use_testthat.html">use_testthat</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>The R console displays some information as sub-directories and files are
 created and edited.</p>
 <pre><code>✔ Adding 'testthat' to Suggests field in DESCRIPTION
@@ -957,8 +1265,8 @@ in this example, we use the function <code><a href="https://usethis.r-lib.org/re
 creation of a test script in the package.
 We use the first argument <code>"example_test"</code> to declare the name of the
 test file.</p>
-<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/use_r.html">use_test</a></span><span class="op">(</span><span class="st">"example_test"</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb68"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/use_r.html">use_test</a></span><span class="op">(</span><span class="st">"example_test"</span><span class="op">)</span></span></code></pre></div>
 <p>The R console displays some information as a sub-directory and a file are
 created.</p>
 <pre><code>✔ Writing 'tests/testthat/test-example_test.R'
@@ -967,10 +1275,10 @@ created.</p>
 is open in the source panel of the RStudio application.
 The script contains an example test that is designed to verify whether
 R correctly returns the value 4 when asked to multiply 2 by 2.</p>
-<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">test_that</span><span class="op">(</span><span class="st">"multiplication works"</span>, <span class="op">{</span>
-  <span class="fu">expect_equal</span><span class="op">(</span><span class="fl">2</span> <span class="op">*</span> <span class="fl">2</span>, <span class="fl">4</span><span class="op">)</span>
-<span class="op">}</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb70"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">test_that</span><span class="op">(</span><span class="st">"multiplication works"</span>, <span class="op">{</span></span>
+<span>  <span class="fu">expect_equal</span><span class="op">(</span><span class="fl">2</span> <span class="op">*</span> <span class="fl">2</span>, <span class="fl">4</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
 <p>This example is trivial and merely a placeholder that we will ultimately replace
 by tests specifically tailored to verify that our own package functions behave
 as expected.
@@ -980,11 +1288,27 @@ of setting up our package infrastructure.</p>
 Coverage is a metric in software testing that measures the fraction of source
 code in a package that is traversed at least once during the execution the
 entire series of tests in that package.</p>
+<div id="report-test-coverage" class="section level3" number="6.14.1">
+<h3>
+<span class="header-section-number">6.14.1</span> Report test coverage<a class="anchor" aria-label="anchor" href="#report-test-coverage"><i class="fas fa-link"></i></a>
+</h3>
+<div id="using-rworkflows-6" class="section level4" number="6.14.1.1">
+<h4>
+<span class="header-section-number">6.14.1.1</span> Using <code>rworkflows</code><a class="anchor" aria-label="anchor" href="#using-rworkflows-6"><i class="fas fa-link"></i></a>
+</h4>
+<p>If you use the <code>rworkflows</code> GitHub Action (see section <a href="bioc-package.html#github_actions">below</a>),
+no additional steps/files are necessary beyond creating your unit tests.
+Code coverage will automatically be tested and the results will be uploaded to <a href="https://app.codecov.io">Codecov</a>.</p>
+</div>
+<div id="using-usethis-biocthis-6" class="section level4" number="6.14.1.2">
+<h4>
+<span class="header-section-number">6.14.1.2</span> Using <code>usethis</code> + <code>biocthis</code><a class="anchor" aria-label="anchor" href="#using-usethis-biocthis-6"><i class="fas fa-link"></i></a>
+</h4>
 <p>In this example, we use the function <code><a href="https://usethis.r-lib.org/reference/use_coverage.html">usethis::use_coverage()</a></code> to set up files
 and default settings for the execution and reporting of test coverage in our
 package.</p>
-<div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/use_coverage.html">use_coverage</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb71"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/use_coverage.html">use_coverage</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>In this example, the CRAN package <em><a href="https://CRAN.R-project.org/package=covr">covr</a></em> is not
 installed yet, so we are prompted to install it first.
 We choose the option to consent.</p>
@@ -1012,24 +1336,44 @@ future builds of the package.
 Another badge is added to the file <code>README.Rmd</code>, for reporting test coverage.</p>
 <p>As a result of that last edit, we are reminded to re-compile the file
 <code>README.Rmd</code>, to apply the updates to the file <code>README.md</code>.</p>
-<div class="sourceCode" id="cb66"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/build_rmd.html">build_readme</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb74"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/build_rmd.html">build_readme</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="create-a-template-vignette" class="section level2" number="6.20">
+</div>
+</div>
+<div id="create-a-template-vignette" class="section level2" number="6.15">
 <h2>
-<span class="header-section-number">6.20</span> Create a template vignette<a class="anchor" aria-label="anchor" href="#create-a-template-vignette"><i class="fas fa-link"></i></a>
+<span class="header-section-number">6.15</span> Create a template vignette<a class="anchor" aria-label="anchor" href="#create-a-template-vignette"><i class="fas fa-link"></i></a>
 </h2>
 <p>Package vignettes are a requirement for Bioconductor packages, providing
 high-quality documentation and a thorough demonstration of the functionality
 in the package.</p>
+<div id="using-rworkflows-7" class="section level4" number="6.15.0.1">
+<h4>
+<span class="header-section-number">6.15.0.1</span> Using <code>rworkflows</code><a class="anchor" aria-label="anchor" href="#using-rworkflows-7"><i class="fas fa-link"></i></a>
+</h4>
+<p><code>rworkflows::use_vignette_getstarted</code> creates a basic “Get started” vignette in
+a style that is compatible with automatically rendering <code>pkgdown</code> documentation websites.
+The <code>author:</code> field within the vignette yaml header is also dynamically filled from the information within the <code>DESCRIPTION</code> file, so it will always be up-to-date without having to manually edit it each time the authors in the <code>DESCRIPTION</code> change.</p>
+<p>In the example below, the command creates a new vignette file:
+<code>vignettes/MyBioconductorPackage.Rmd</code></p>
+<div class="sourceCode" id="cb75"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">rworkflows</span><span class="fu">::</span><span class="fu">use_vignette_getstarted</span><span class="op">(</span>package <span class="op">=</span> <span class="st">"MyBioconductorPackage"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div id="using-usethis-biocthis-7" class="section level4" number="6.15.0.2">
+<h4>
+<span class="header-section-number">6.15.0.2</span> Using <code>usethis</code> + <code>biocthis</code><a class="anchor" aria-label="anchor" href="#using-usethis-biocthis-7"><i class="fas fa-link"></i></a>
+</h4>
 <p>In this example, we use the function <code>biocthis::use_bioc_vignette()</code> to
 initialise a template vignette that we can examine and edit as needed.</p>
-<div class="sourceCode" id="cb67"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">pkg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/basename.html">basename</a></span><span class="op">(</span><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/proj_utils.html">proj_get</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-<span class="fu">biocthis</span><span class="fu">::</span><span class="fu">use_bioc_vignette</span><span class="op">(</span><span class="va">pkg</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"Introduction to"</span>, <span class="va">pkg</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb76"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## Only works if the folder name is the same as the package name</span></span>
+<span><span class="va">pkg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/basename.html">basename</a></span><span class="op">(</span><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/proj_utils.html">proj_get</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">biocthis</span><span class="fu">::</span><span class="fu">use_bioc_vignette</span><span class="op">(</span><span class="va">pkg</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"Introduction to"</span>, <span class="va">pkg</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>The R console displays information as package dependencies required for the
 compilation of the template vignette are added to the file <code>DESCRIPTION</code>.
-Simultaneously, a sub-directory <code>vignette/</code> is created,
+Simultaneously, a sub-directory <code>vignettes/</code> is created,
 and a R Markdown file <code>MyBioconductorPackage.Rmd</code> is created within that new
 sub-directory.
 Additionally, the file <code>.gitignore</code> is edited to add entry <code>inst/doc</code> that
@@ -1080,15 +1424,49 @@ distributed with the package.</p>
 <p>In this example, we leave the rest of the template vignette to its original
 contents.</p>
 </div>
-<div id="create-a-template-github-actions" class="section level2" number="6.21">
+</div>
+<div id="github_actions" class="section level2" number="6.16">
 <h2>
-<span class="header-section-number">6.21</span> Create a template GitHub Actions<a class="anchor" aria-label="anchor" href="#create-a-template-github-actions"><i class="fas fa-link"></i></a>
+<span class="header-section-number">6.16</span> Enable GitHub Actions<a class="anchor" aria-label="anchor" href="#github_actions"><i class="fas fa-link"></i></a>
 </h2>
 <p>In the earlier section
 <a href="bioc-package.html#add-badges-to-the-readme-file">Add badges to the README file</a>,
 we added a badge that reports the status of a
 <a href="https://github.com/features/actions">GitHub Actions</a> workflow that we are only
 about to create now.</p>
+<div id="key-differences-between-rworkflows-vs.-usethis-biocthis-strategies" class="section level3" number="6.16.1">
+<h3>
+<span class="header-section-number">6.16.1</span> Key differences between <code>rworkflows</code> vs. <code>usethis</code> + <code>biocthis</code> strategies<a class="anchor" aria-label="anchor" href="#key-differences-between-rworkflows-vs.-usethis-biocthis-strategies"><i class="fas fa-link"></i></a>
+</h3>
+<p>When it comes to GitHub Actions, there is one major key difference between the two strategies:</p>
+<ol style="list-style-type: decimal">
+<li>
+<strong>Using <code>rworkflows</code></strong>: Uses <a href="https://github.com/neurogenomics/rworkflows/blob/master/action.yml">a centrally maintained <strong>action</strong></a>
+(eponymously named <code>rworkflows</code>) that is distributed via the <a href="https://github.com/marketplace/actions/rworkflows">GitHub Actions Marketplace</a>. This strategy only generates a short yaml file that contains parameters for calling the main <code>rworkflows</code> action.</li>
+<li>
+<strong>Using <code>usethis</code> + <code>biocthis</code></strong>: Generates a static yaml file containing the full code to run all steps of the workflow.</li>
+</ol>
+<p>This means that when using the latter strategy, if anything in the static <strong>workflow</strong> file breaks the user must debug it themselves or wait until the next release of Bioconductor (in the case of <code>biocthis</code>).</p>
+<p>In contrast, fixes pushed to the <code>rworkflows</code> <strong>action</strong> are immediately propagated to all users of the action the next time they run GitHub Actions. Users also have more nuanced control over which version of the <code>rworkflows</code> <strong>action</strong> they wish to call, as GitHub Actions support tagged releases (e.g. <code>@v1</code>) in addition to calling from specific branches (e.g. <code>@master</code>).</p>
+</div>
+<div id="using-rworkflows-8" class="section level3" number="6.16.2">
+<h3>
+<span class="header-section-number">6.16.2</span> Using <code>rworkflows</code><a class="anchor" aria-label="anchor" href="#using-rworkflows-8"><i class="fas fa-link"></i></a>
+</h3>
+<p>To set up GitHub Actions with <code>rworkflows</code>, the following command only needs to be run once per R package. This generates a short yaml workflow containing just the runners (which OS platforms you want to launch GitHub Actions on) and the parameters to call the <code>rworkflows</code> <strong>action</strong> with.</p>
+<p>See <code>?rworkflows::use_workflow</code> for a full description of all arguments.</p>
+<div class="sourceCode" id="cb79"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">rworkflows</span><span class="fu">::</span><span class="fu">use_workflow</span><span class="op">(</span>run_pkgdown <span class="op">=</span> <span class="cn">TRUE</span>, </span>
+<span>                         run_rcmdcheck <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                         run_bioccheck <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<p>These parameters can be updated at any time by simply rerunning the function while setting the argument <code>force_new=TRUE</code> to overwrite the old yaml file.</p>
+<p>Here is a diagram of the full <code>rworkflows</code> pipeline:
+<img src="https://assets.researchsquare.com/files/rs-2399015/v1/91bae1deb692a749bb5c934f.jpg?maxDims=1200x1200" alt="rworkflows pipeline"></p>
+</div>
+<div id="using-usethis-biocthis-8" class="section level3" number="6.16.3">
+<h3>
+<span class="header-section-number">6.16.3</span> Using <code>usethis</code> + <code>biocthis</code><a class="anchor" aria-label="anchor" href="#using-usethis-biocthis-8"><i class="fas fa-link"></i></a>
+</h3>
 <p>In this example, we use the function <code>biocthis::use_bioc_github_action()</code> to
 initialise a template GitHub Actions workflow that includes a number of actions
 typically performed during software development to verify the integrity and
@@ -1096,8 +1474,8 @@ functionality of software package.
 This process – called continuous integration – is extremely valuable to
 identify issues as early as possible in the software development process,
 preferably as part as automated testing, and before those issues reach users.</p>
-<div class="sourceCode" id="cb70"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">biocthis</span><span class="fu">::</span><span class="fu">use_bioc_github_action</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb80"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">biocthis</span><span class="fu">::</span><span class="fu">use_bioc_github_action</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>The R console displays information as a sub-directory <code>.github/workflows/</code> and
 a file <code>check-bioc.yml</code> within that sub-directory.</p>
 <pre><code>✔ Creating '.github/workflows/'
@@ -1138,73 +1516,109 @@ presence of warning messages.</p>
               error_on = "error",
               check_dir = "check"
           )</code></pre>
-<p>Note:</p>
+<p><strong>Note</strong>:</p>
 <ul>
 <li>Bioconductor recommends that packages should pass <code>R CMD check</code> without any
 WARNING nor ERROR message.</li>
 </ul>
 </div>
-<div id="using-github-actions" class="section level2" number="6.22">
+</div>
+<div id="deploy-github-actions" class="section level2" number="6.17">
 <h2>
-<span class="header-section-number">6.22</span> Using GitHub Actions<a class="anchor" aria-label="anchor" href="#using-github-actions"><i class="fas fa-link"></i></a>
+<span class="header-section-number">6.17</span> Deploy GitHub Actions<a class="anchor" aria-label="anchor" href="#deploy-github-actions"><i class="fas fa-link"></i></a>
 </h2>
 <p>In this example, we have regularly made commits to the git repository as we
-progressed through each section.
-We make a new commit now, all the files that we have recently created and
+progressed through each section.</p>
+<p>We make a new commit now, all the files that we have recently created and
 edited, and we push the new git commit to GitHub.
 This can be done through a set of commands typed on the command line in a
 Terminal (e.g., the <code>Terminal</code> panel of the RStudio application), or using the
 <code>Git</code> panel of the RStudio application.</p>
-<div id="using-git-on-terminal-command-line" class="section level3" number="6.22.1">
+<div id="push-changes-to-github" class="section level3" number="6.17.1">
 <h3>
-<span class="header-section-number">6.22.1</span> Using Git on Terminal command line<a class="anchor" aria-label="anchor" href="#using-git-on-terminal-command-line"><i class="fas fa-link"></i></a>
+<span class="header-section-number">6.17.1</span> Push changes to GitHub<a class="anchor" aria-label="anchor" href="#push-changes-to-github"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb73"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb73-1"><a href="bioc-package.html#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add .</span>
-<span id="cb73-2"><a href="bioc-package.html#cb73-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"add template files"</span></span>
-<span id="cb73-3"><a href="bioc-package.html#cb73-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push</span></code></pre></div>
+<div id="using-git-on-terminal-command-line" class="section level4" number="6.17.1.1">
+<h4>
+<span class="header-section-number">6.17.1.1</span> Using Git on Terminal command line<a class="anchor" aria-label="anchor" href="#using-git-on-terminal-command-line"><i class="fas fa-link"></i></a>
+</h4>
+<div class="sourceCode" id="cb83"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb83-1"><a href="bioc-package.html#cb83-1" tabindex="-1"></a><span class="fu">git</span> add .</span>
+<span id="cb83-2"><a href="bioc-package.html#cb83-2" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"add template files"</span></span>
+<span id="cb83-3"><a href="bioc-package.html#cb83-3" tabindex="-1"></a><span class="fu">git</span> push</span></code></pre></div>
 </div>
-<div id="using-the-rstudio-git-panel" class="section level3" number="6.22.2">
-<h3>
-<span class="header-section-number">6.22.2</span> Using the RStudio Git panel<a class="anchor" aria-label="anchor" href="#using-the-rstudio-git-panel"><i class="fas fa-link"></i></a>
-</h3>
+<div id="using-the-rstudio-git-panel" class="section level4" number="6.17.1.2">
+<h4>
+<span class="header-section-number">6.17.1.2</span> Using the RStudio Git panel<a class="anchor" aria-label="anchor" href="#using-the-rstudio-git-panel"><i class="fas fa-link"></i></a>
+</h4>
 <p>We click the <code>Git</code> tab, then the <code>Diff</code> button, and in the popup, we type a
 commit message that describes the changes that we are making in this commit.
 Then we click the <code>Commit</code> button, and the <code>Push</code> button.</p>
-<div class="figure">
-<img src="images/rstudio-git-github-actions.png" style="width:100.0%" alt=""><p class="caption">RStudio Git panel</p>
+<div class="float">
+<img src="images/rstudio-git-github-actions.png" style="width:100.0%" alt="RStudio Git panel"><div class="figcaption">RStudio Git panel</div>
 </div>
 <p>When the commit reaches the GitHub repository, the presence of the file
-<code>.github/workflows/check-bioc.yml</code> prompts GitHub to execute the GitHub Action
+<code>.github/workflows/*.yml</code> prompts GitHub to execute the GitHub Actions
 workflow.</p>
 <p>The log file produced by the GitHub Action workflow can be watched as it is
-being generated, in the “Actions” section of the GitHub repository:
-<a href="https://github.com/kevinrue/MyBioconductorPackage/runs/6388422844?check_suite_focus=true" class="uri">https://github.com/kevinrue/MyBioconductorPackage/runs/6388422844?check_suite_focus=true</a>.</p>
+being generated, in the <a href="https://github.com/kevinrue/MyBioconductorPackage/runs">“Actions” tab of the GitHub repository</a>.</p>
 <p>In this example, when the GitHub Action workflow completes, we see that it
-reports a single ERROR message that occurred during the step running
+reports a single <code>ERROR</code> message that occurred during the step running
 <code>BiocCheck::BiocCheck()</code>.</p>
-<p>The full report is fairly large; only the ERROR message is displayed below.</p>
+<p>The full report is fairly long,
+but here is the part containing the <code>ERROR</code> message:</p>
 <pre><code>* Checking for non-trivial biocViews...
     * ERROR: Add biocViews other than Software</code></pre>
-<p>To resolve that ERROR message, in this example, we open the file <code>DESCRIPTION</code>
+<details><summary>
+Full GHA report
+</summary><pre><code>&lt;paste report here&gt;
+</code></pre>
+</details><p>To resolve that <code>ERROR</code> message, in this example, we open the file <code>DESCRIPTION</code>
 and add the term <code>Infrastructure</code> to the section <code>biocViews</code>.</p>
 <pre><code>biocViews: Software,
     Infrastructure</code></pre>
 <p>Then, we make another commit and push the updated repository to GitHub.</p>
-<div class="figure">
-<img src="images/rstudio-git-biocviews-error.png" style="width:100.0%" alt=""><p class="caption">Make a commit that fixes an ERROR in the GitHub Actions workflow.</p>
+<div class="float">
+<img src="images/rstudio-git-biocviews-error.png" style="width:100.0%" alt="Make a commit that fixes an ERROR in the GitHub Actions workflow."><div class="figcaption">Make a commit that fixes an <code>ERROR</code> in the GitHub Actions workflow.</div>
 </div>
 <p>When the push to the GitHub repository completes, the GitHub Actions workflow
 is automatically triggered.
-In this example, we are pleased to see that the previous ERROR message does not
+In this example, we are pleased to see that the previous <code>ERROR</code> message does not
 appear in the new report.</p>
 <p>However, we see that an issue is now reported, specifically on the Ubuntu
 platform.
 We will address this issue in the next section.</p>
 </div>
 </div>
-<div id="add-r-code" class="section level2" number="6.23">
+<div id="special-commit-messages" class="section level3" number="6.17.2">
+<h3>
+<span class="header-section-number">6.17.2</span> Special commit messages<a class="anchor" aria-label="anchor" href="#special-commit-messages"><i class="fas fa-link"></i></a>
+</h3>
+<p>When pushing commits to GitHub while GitHub Actions is enabled, you can add special keywords to the commit messages to get certain behaviour.</p>
+<ul>
+<li>
+<code>[skip ci]</code>:
+<ul>
+<li>
+<strong>Behaviour</strong>: One of <a href="https://docs.github.com/en/actions/managing-workflow-runs/skipping-workflow-runs">several synonymous keywords</a> that prevent GitHub Actions from launching after pushing that commit.</li>
+<li>
+<strong>Scope</strong>: Can be used for any GitHub Actions workflow.</li>
+</ul>
+</li>
+<li>
+<code>/nocache</code>:
+<ul>
+<li>
+<strong>Behaviour</strong>: Overrides using any cached files or software installations from previous runs on GitHub Actions.</li>
+<li>
+<strong>Scope</strong>: Applies only to workflows generated with <code>rworkflows</code> or <code>biocthis</code>.</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="add-r-code" class="section level2" number="6.18">
 <h2>
-<span class="header-section-number">6.23</span> Add R code<a class="anchor" aria-label="anchor" href="#add-r-code"><i class="fas fa-link"></i></a>
+<span class="header-section-number">6.18</span> Add R code<a class="anchor" aria-label="anchor" href="#add-r-code"><i class="fas fa-link"></i></a>
 </h2>
 <p>So far – in this example – we have been developing the infrastructure of our
 new package, without adding any source code to the sub-directory <code>R/</code>.
@@ -1214,8 +1628,8 @@ code still causes an issue during the execution GitHub Action workflow,
 specifically on the Ubuntu platform</p>
 <p>The relevant GitHub Actions report is available at:
 <a href="https://github.com/kevinrue/MyBioconductorPackage/runs/6388447895?check_suite_focus=true" class="uri">https://github.com/kevinrue/MyBioconductorPackage/runs/6388447895?check_suite_focus=true</a></p>
-<div class="figure">
-<img src="images/github-action-error-ubuntu.png" style="width:100.0%" alt=""><p class="caption">GitHub Actions failing specifically on the Ubuntu platform.</p>
+<div class="float">
+<img src="images/github-action-error-ubuntu.png" style="width:100.0%" alt="GitHub Actions failing specifically on the Ubuntu platform."><div class="figcaption">GitHub Actions failing specifically on the Ubuntu platform.</div>
 </div>
 <p>Specifically, the relevant part of the report is displayed below.</p>
 <pre><code>&gt; Run covr::codecov()
@@ -1228,15 +1642,15 @@ Execution halted
 Error: Process completed with exit code 1.</code></pre>
 <p>To address this issue, we create an R script <code>example.R</code> in the <code>R/</code>
 sub-directory of our package, and we write a simple function in that package.</p>
-<div class="sourceCode" id="cb77"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## example.R</span>
-<span class="va">my_bioc_function</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/message.html">message</a></span><span class="op">(</span><span class="st">"This is an example function"</span><span class="op">)</span>
-  <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="va">x</span> <span class="op">+</span> <span class="va">y</span><span class="op">)</span>
-<span class="op">}</span></code></pre></div>
+<div class="sourceCode" id="cb88"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## example.R</span></span>
+<span><span class="va">my_bioc_function</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/message.html">message</a></span><span class="op">(</span><span class="st">"This is an example function"</span><span class="op">)</span></span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="va">x</span> <span class="op">+</span> <span class="va">y</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 <p>We save the file, and then we commit and push it to the GitHub repository.</p>
-<div class="figure">
-<img src="rstudio-git-add-script.png" style="width:100.0%" alt=""><p class="caption">Add an R script in the <code>R/</code> sub-directory.</p>
+<div class="float">
+<img src="rstudio-git-add-script.png" style="width:100.0%" alt="Add an R script in the R/ sub-directory."><div class="figcaption">Add an R script in the <code>R/</code> sub-directory.</div>
 </div>
 <p>When the GitHub Action completes, we gladly see that the previous error message
 has now disappeared.
@@ -1246,13 +1660,13 @@ The report is available at:
 workflow.
 We will address this issue in the next section.</p>
 </div>
-<div id="github-pages" class="section level2" number="6.24">
+<div id="github-pages" class="section level2" number="6.19">
 <h2>
-<span class="header-section-number">6.24</span> GitHub Pages<a class="anchor" aria-label="anchor" href="#github-pages"><i class="fas fa-link"></i></a>
+<span class="header-section-number">6.19</span> GitHub Pages<a class="anchor" aria-label="anchor" href="#github-pages"><i class="fas fa-link"></i></a>
 </h2>
 <p>In the GitHub Actions report produced by our changes in the previous section,
 we see that an error is reported in the section <code>Build and deploy pkgdown site</code>.</p>
-<p>The error messsage is copied below.</p>
+<p>The error message is copied below.</p>
 <pre><code>&gt; Run git config --local user.name "$GITHUB_ACTOR"
 Run git config --local user.name "$GITHUB_ACTOR"
 Running git checkout --orphan gh-pages
@@ -1280,11 +1694,11 @@ Error: Process completed with exit code 1.</code></pre>
 interpret.</p>
 <p>However, the solution to this issue is to run the following set of commands in
 the R console of the RStudio application.</p>
-<div class="sourceCode" id="cb79"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">pkgdown</span><span class="fu">::</span><span class="fu">deploy_to_branch</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb90"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">pkgdown</span><span class="fu">::</span><span class="fu"><a href="https://pkgdown.r-lib.org/reference/deploy_to_branch.html">deploy_to_branch</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>Note:</p>
 <ul>
-<li>The function <code>pkgdown::deploy_to_branch()</code> is the same as the GitHub Action
+<li>The function <code><a href="https://pkgdown.r-lib.org/reference/deploy_to_branch.html">pkgdown::deploy_to_branch()</a></code> is the same as the GitHub Action
 workflow tries to run.
 However, it must be run once manually to set things up, in such a way that
 the GitHub Action workflow can use that setup to perform its function
@@ -1309,18 +1723,18 @@ created branch <code>gh-pages</code>.</p>
 <code>Actions</code> and <code>General</code> sub-sections, we scroll down to the section
 <code>Workflow permissions</code> and tick the option <code>Read and write permissions</code>.
 Finally, we click the <code>Save</code> button at the bottom of the page.</p>
-<div class="figure">
-<img src="images/github-settings-allow-bot.png" style="width:100.0%" alt=""><p class="caption">Give GitHub Actions workflows read and write permissions to the repository.</p>
+<div class="float">
+<img src="images/github-settings-allow-bot.png" style="width:100.0%" alt="Give GitHub Actions workflows read and write permissions to the repository."><div class="figcaption">Give GitHub Actions workflows read and write permissions to the repository.</div>
 </div>
 <p>At this point, we can force GitHub to re-run the failed workflow, in the
 <code>Actions</code> tab of the repository.</p>
-<div class="figure">
-<img src="images/github-actions-rerun-workflow.png" style="width:100.0%" alt=""><p class="caption">Re-run failed GitHub Actions workflows.</p>
+<div class="float">
+<img src="images/github-actions-rerun-workflow.png" style="width:100.0%" alt="Re-run failed GitHub Actions workflows."><div class="figcaption">Re-run failed GitHub Actions workflows.</div>
 </div>
 <p>In this example, when the GitHub Actions workflow completes, we see now our
 first fully successful build report!</p>
-<div class="figure">
-<img src="images/github-github-action-success.png" style="width:100.0%" alt=""><p class="caption">First fully successful GitHub Actions report.</p>
+<div class="float">
+<img src="images/github-github-action-success.png" style="width:100.0%" alt="First fully successful GitHub Actions report."><div class="figcaption">First fully successful GitHub Actions report.</div>
 </div>
 <p>An exciting output of this section is the online deployment of the package
 documentation on GitHub Pages.
@@ -1330,24 +1744,34 @@ GitHub repository at a URL built as <code>&lt;username&gt;.github.io/&lt;reposit
 <p>In doubt, one way to identify that address for your own repository is to
 navigate to the <code>Settings</code> tab, in the <code>Pages</code> section, and you will find
 the URL at the top of that page.</p>
-<div class="figure">
-<img src="images/github-pages-link.png" style="width:100.0%" alt=""><p class="caption">URL of GitHub Pages for the repository.</p>
+<div class="float">
+<img src="images/github-pages-link.png" style="width:100.0%" alt="URL of GitHub Pages for the repository."><div class="figcaption">URL of GitHub Pages for the repository.</div>
 </div>
 <p>Navigate to that URL to find the online version of your package documentation!</p>
-<div class="figure">
-<img src="images/pkgdown-github-pages.png" style="width:100.0%" alt=""><p class="caption">Package documentation deployed using <code>pkgdown</code></p>
+<div class="float">
+<img src="images/pkgdown-github-pages.png" style="width:100.0%" alt="Package documentation deployed using pkgdown"><div class="figcaption">Package documentation deployed using <code>pkgdown</code>
 </div>
 </div>
-<div id="continue-developing-the-package" class="section level2" number="6.25">
+</div>
+<div id="summary-1" class="section level2" number="6.20">
 <h2>
-<span class="header-section-number">6.25</span> Continue developing the package<a class="anchor" aria-label="anchor" href="#continue-developing-the-package"><i class="fas fa-link"></i></a>
+<span class="header-section-number">6.20</span> Summary<a class="anchor" aria-label="anchor" href="#summary-1"><i class="fas fa-link"></i></a>
 </h2>
+<div id="continue-developing-the-package" class="section level3" number="6.20.1">
+<h3>
+<span class="header-section-number">6.20.1</span> Continue developing the package<a class="anchor" aria-label="anchor" href="#continue-developing-the-package"><i class="fas fa-link"></i></a>
+</h3>
 <p>At this point, all the essential components of our new Bioconductor-friendly
 package are in place.</p>
 <p>We are now in a place where we can safely focus more of our attention to the
 source code and documentation of the package.
 Those are topics that will be covered in more details in other sections of this
 book.</p>
+</div>
+<div id="takeaways" class="section level3" number="6.20.2">
+<h3>
+<span class="header-section-number">6.20.2</span> Takeaways<a class="anchor" aria-label="anchor" href="#takeaways"><i class="fas fa-link"></i></a>
+</h3>
 <p>In the meantime, the takeaways from this chapter are:</p>
 <ul>
 <li>Updates to a package often require edits across multiple files:
@@ -1363,14 +1787,13 @@ book.</p>
 file, to apply those changes to the file <code>README.md</code>.</li>
 </ul>
 </li>
-<li>The template GitHub Actions workflow is run every time the repository is
-pushed.</li>
+<li>The GitHub Actions are run every time the repository is pushed.</li>
 <li>Use the GitHub Actions report to identify and monitor issues that you should
 fix in your package.</li>
 <li>Many aspects of software development are subject to changes,
 from Bioconductor best practices and requirements, to packages intended to
-facilitate your work – e.g. <em><a href="https://CRAN.R-project.org/package=usethis">usethis</a></em>
-and <em><a href="https://bioconductor.org/packages/3.16/biocthis">biocthis</a></em>.
+facilitate your work – e.g.: <em><a href="https://CRAN.R-project.org/package=rworkflows">rworkflows</a></em>,
+<em><a href="https://CRAN.R-project.org/package=usethis">usethis</a></em> and <em><a href="https://bioconductor.org/packages/3.18/biocthis">biocthis</a></em>.
 You may need to stay informed and willing to adapt the contents of your
 package to match new requirements.</li>
 <li>This chapter describes a number of optional components, and an opinionated
@@ -1384,13 +1807,25 @@ community and communicate with fellow package users and developers on the
 <a href="https://bioc-community.herokuapp.com/">Bioconductor Slack workspace</a> and the
 <a href="https://support.bioconductor.org/">Bioconductor Support site</a>.</p>
 </div>
-<div id="further-reading" class="section level2" number="6.26">
+</div>
+<div id="further-reading" class="section level2" number="6.21">
 <h2>
-<span class="header-section-number">6.26</span> Further reading<a class="anchor" aria-label="anchor" href="#further-reading"><i class="fas fa-link"></i></a>
+<span class="header-section-number">6.21</span> Further reading<a class="anchor" aria-label="anchor" href="#further-reading"><i class="fas fa-link"></i></a>
 </h2>
-<div id="biocthis" class="section level3" number="6.26.1">
+<div id="rworkflows" class="section level3" number="6.21.1">
 <h3>
-<span class="header-section-number">6.26.1</span> <code>biocthis</code><a class="anchor" aria-label="anchor" href="#biocthis"><i class="fas fa-link"></i></a>
+<span class="header-section-number">6.21.1</span> <a href="https://github.com/neurogenomics/rworkflows"><code>rworkflows</code></a><a class="anchor" aria-label="anchor" href="#rworkflows"><i class="fas fa-link"></i></a>
+</h3>
+<ul>
+<li><a href="https://neurogenomics.github.io/rworkflows/"><code>rworkflows</code> suite documentation site</a></li>
+<li><a href="https://github.com/marketplace/actions/rworkflows"><code>rworkflows</code> GitHub Action Marketplace</a></li>
+<li><a href="https://github.com/neurogenomics/templateR"><code>templateR</code> R package template</a></li>
+<li><a href="https://doi.org/10.21203/rs.3.rs-2399015/v1"><code>rworflows</code> manuscript</a></li>
+</ul>
+</div>
+<div id="biocthis" class="section level3" number="6.21.2">
+<h3>
+<span class="header-section-number">6.21.2</span> <a href="https://github.com/lcolladotor/biocthis"><code>biocthis</code></a><a class="anchor" aria-label="anchor" href="#biocthis"><i class="fas fa-link"></i></a>
 </h3>
 <ul>
 <li>
@@ -1411,9 +1846,9 @@ community and communicate with fellow package users and developers on the
 </li>
 </ul>
 </div>
-<div id="making-a-bioconductor-package" class="section level3" number="6.26.2">
+<div id="making-a-bioconductor-package" class="section level3" number="6.21.3">
 <h3>
-<span class="header-section-number">6.26.2</span> Making a Bioconductor package<a class="anchor" aria-label="anchor" href="#making-a-bioconductor-package"><i class="fas fa-link"></i></a>
+<span class="header-section-number">6.21.3</span> Making a Bioconductor package<a class="anchor" aria-label="anchor" href="#making-a-bioconductor-package"><i class="fas fa-link"></i></a>
 </h3>
 <ul>
 <li><a href="https://github.com/kevinrue/MyBioconductorPackage">kevinrue/MyBioconductorPackage - GitHub repository created in this chapter (2022-05-11)</a></li>
@@ -1435,39 +1870,98 @@ community and communicate with fellow package users and developers on the
       <ul class="nav navbar-nav">
 <li><a class="nav-link" href="#bioc-package"><span class="header-section-number">6</span> Making a Bioconductor package</a></li>
 <li><a class="nav-link" href="#environment"><span class="header-section-number">6.1</span> Environment</a></li>
-<li><a class="nav-link" href="#install-accessory-packages"><span class="header-section-number">6.2</span> Install accessory packages</a></li>
-<li><a class="nav-link" href="#check-if-the-package-name-is-available-on-cran-and-bioconductor"><span class="header-section-number">6.3</span> Check if the package name is available on CRAN and Bioconductor</a></li>
-<li><a class="nav-link" href="#create-a-package-template-with-usethis"><span class="header-section-number">6.4</span> Create a package template with usethis</a></li>
-<li><a class="nav-link" href="#create-template-scripts-using-biocthis"><span class="header-section-number">6.5</span> Create template scripts using biocthis</a></li>
-<li><a class="nav-link" href="#create-the-r-package"><span class="header-section-number">6.6</span> Create the R package</a></li>
-<li><a class="nav-link" href="#exclude-files-from-git-version-control"><span class="header-section-number">6.7</span> Exclude files from git version control</a></li>
-<li><a class="nav-link" href="#set-up-git"><span class="header-section-number">6.8</span> Set up git</a></li>
-<li><a class="nav-link" href="#connect-the-git-repository-to-github"><span class="header-section-number">6.9</span> Connect the git repository to GitHub</a></li>
-<li><a class="nav-link" href="#edit-the-description-file"><span class="header-section-number">6.10</span> Edit the DESCRIPTION file</a></li>
-<li><a class="nav-link" href="#create-the-readme-file"><span class="header-section-number">6.11</span> Create the README file</a></li>
-<li><a class="nav-link" href="#create-the-news-file"><span class="header-section-number">6.12</span> Create the NEWS file</a></li>
-<li><a class="nav-link" href="#create-a-bioconductor-styled-code-of-conduct"><span class="header-section-number">6.13</span> Create a Bioconductor-styled code of conduct</a></li>
-<li><a class="nav-link" href="#create-a-guide-for-contributions"><span class="header-section-number">6.14</span> Create a guide for contributions</a></li>
-<li><a class="nav-link" href="#create-a-guide-for-getting-support"><span class="header-section-number">6.15</span> Create a guide for getting support</a></li>
-<li><a class="nav-link" href="#create-a-github-issue-template"><span class="header-section-number">6.16</span> Create a GitHub issue template</a></li>
-<li><a class="nav-link" href="#create-a-citation-template"><span class="header-section-number">6.17</span> Create a CITATION template</a></li>
-<li><a class="nav-link" href="#add-badges-to-the-readme-file"><span class="header-section-number">6.18</span> Add badges to the README file</a></li>
-<li><a class="nav-link" href="#enable-unit-tests"><span class="header-section-number">6.19</span> Enable unit tests</a></li>
-<li><a class="nav-link" href="#create-a-template-vignette"><span class="header-section-number">6.20</span> Create a template vignette</a></li>
-<li><a class="nav-link" href="#create-a-template-github-actions"><span class="header-section-number">6.21</span> Create a template GitHub Actions</a></li>
 <li>
-<a class="nav-link" href="#using-github-actions"><span class="header-section-number">6.22</span> Using GitHub Actions</a><ul class="nav navbar-nav">
-<li><a class="nav-link" href="#using-git-on-terminal-command-line"><span class="header-section-number">6.22.1</span> Using Git on Terminal command line</a></li>
-<li><a class="nav-link" href="#using-the-rstudio-git-panel"><span class="header-section-number">6.22.2</span> Using the RStudio Git panel</a></li>
+<a class="nav-link" href="#install-accessory-packages"><span class="header-section-number">6.2</span> Install accessory packages</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#cran-packages"><span class="header-section-number">6.2.1</span> CRAN packages</a></li>
+<li><a class="nav-link" href="#bioconductor-packages"><span class="header-section-number">6.2.2</span> Bioconductor packages</a></li>
 </ul>
 </li>
-<li><a class="nav-link" href="#add-r-code"><span class="header-section-number">6.23</span> Add R code</a></li>
-<li><a class="nav-link" href="#github-pages"><span class="header-section-number">6.24</span> GitHub Pages</a></li>
-<li><a class="nav-link" href="#continue-developing-the-package"><span class="header-section-number">6.25</span> Continue developing the package</a></li>
+<li><a class="nav-link" href="#check-if-the-package-name-is-available-on-cran-and-bioconductor"><span class="header-section-number">6.3</span> Check if the package name is available on CRAN and Bioconductor</a></li>
 <li>
-<a class="nav-link" href="#further-reading"><span class="header-section-number">6.26</span> Further reading</a><ul class="nav navbar-nav">
-<li><a class="nav-link" href="#biocthis"><span class="header-section-number">6.26.1</span> biocthis</a></li>
-<li><a class="nav-link" href="#making-a-bioconductor-package"><span class="header-section-number">6.26.2</span> Making a Bioconductor package</a></li>
+<a class="nav-link" href="#create-a-package-template"><span class="header-section-number">6.4</span> Create a package template</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#using-rworkflows"><span class="header-section-number">6.4.1</span> Using rworkflows</a></li>
+<li><a class="nav-link" href="#using-usethis-biocthis"><span class="header-section-number">6.4.2</span> Using usethis + biocthis</a></li>
+</ul>
+</li>
+<li>
+<a class="nav-link" href="#edit-the-description-file"><span class="header-section-number">6.5</span> Edit the DESCRIPTION file</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#setup"><span class="header-section-number">6.5.1</span> Setup</a></li>
+<li><a class="nav-link" href="#package_name"><span class="header-section-number">6.5.2</span> Package name</a></li>
+<li><a class="nav-link" href="#package-title"><span class="header-section-number">6.5.3</span> Package title</a></li>
+<li><a class="nav-link" href="#package-version"><span class="header-section-number">6.5.4</span> Package version</a></li>
+<li><a class="nav-link" href="#package-date"><span class="header-section-number">6.5.5</span> Package date</a></li>
+<li><a class="nav-link" href="#package-authors"><span class="header-section-number">6.5.6</span> Package authors</a></li>
+<li><a class="nav-link" href="#package-description"><span class="header-section-number">6.5.7</span> Package description</a></li>
+<li><a class="nav-link" href="#package-license"><span class="header-section-number">6.5.8</span> Package license</a></li>
+<li><a class="nav-link" href="#package-url-and-bugreports"><span class="header-section-number">6.5.9</span> Package URL and BugReports</a></li>
+<li><a class="nav-link" href="#package-depends"><span class="header-section-number">6.5.10</span> Package Depends</a></li>
+<li><a class="nav-link" href="#package-imports"><span class="header-section-number">6.5.11</span> Package Imports</a></li>
+<li><a class="nav-link" href="#package-suggests"><span class="header-section-number">6.5.12</span> Package Suggests</a></li>
+<li><a class="nav-link" href="#package-remotes"><span class="header-section-number">6.5.13</span> Package Remotes</a></li>
+<li><a class="nav-link" href="#package-biocviews"><span class="header-section-number">6.5.14</span> Package biocViews</a></li>
+<li><a class="nav-link" href="#package-encoding"><span class="header-section-number">6.5.15</span> Package Encoding</a></li>
+<li><a class="nav-link" href="#package-roxygen-and-roxygennote"><span class="header-section-number">6.5.16</span> Package Roxygen and RoxygenNote</a></li>
+<li><a class="nav-link" href="#summary"><span class="header-section-number">6.5.17</span> Summary</a></li>
+</ul>
+</li>
+<li>
+<a class="nav-link" href="#create-the-readme-file"><span class="header-section-number">6.6</span> Create the README file</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#using-rworkflows-2"><span class="header-section-number">6.6.1</span> Using rworkflows</a></li>
+<li><a class="nav-link" href="#using-usethis-biocthis-2"><span class="header-section-number">6.6.2</span> Using usethis + biocthis</a></li>
+</ul>
+</li>
+<li><a class="nav-link" href="#create-the-news-file"><span class="header-section-number">6.7</span> Create the NEWS file</a></li>
+<li><a class="nav-link" href="#create-a-bioconductor-styled-code-of-conduct"><span class="header-section-number">6.8</span> Create a Bioconductor-styled code of conduct</a></li>
+<li><a class="nav-link" href="#create-a-guide-for-contributions"><span class="header-section-number">6.9</span> Create a guide for contributions</a></li>
+<li><a class="nav-link" href="#create-a-guide-for-getting-support"><span class="header-section-number">6.10</span> Create a guide for getting support</a></li>
+<li>
+<a class="nav-link" href="#create-a-github-issue-template"><span class="header-section-number">6.11</span> Create a GitHub issue template</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#using-rworkflows-3"><span class="header-section-number">6.11.1</span> Using rworkflows</a></li>
+<li><a class="nav-link" href="#using-usethis-biocthis-3"><span class="header-section-number">6.11.2</span> Using usethis + biocthis</a></li>
+</ul>
+</li>
+<li>
+<a class="nav-link" href="#create-a-citation-template"><span class="header-section-number">6.12</span> Create a CITATION template</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#using-rworkflows-4"><span class="header-section-number">6.12.1</span> Using rworkflows</a></li>
+<li><a class="nav-link" href="#using-usethis-biocthis-4"><span class="header-section-number">6.12.2</span> Using usethis + biocthis</a></li>
+</ul>
+</li>
+<li>
+<a class="nav-link" href="#add-badges-to-the-readme-file"><span class="header-section-number">6.13</span> Add badges to the README file</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#using-rworkflows-5"><span class="header-section-number">6.13.1</span> Using rworkflows</a></li>
+<li><a class="nav-link" href="#using-usethis-biocthis-5"><span class="header-section-number">6.13.2</span> Using usethis + biocthis</a></li>
+</ul>
+</li>
+<li>
+<a class="nav-link" href="#enable-unit-tests"><span class="header-section-number">6.14</span> Enable unit tests</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#report-test-coverage"><span class="header-section-number">6.14.1</span> Report test coverage</a></li></ul>
+</li>
+<li><a class="nav-link" href="#create-a-template-vignette"><span class="header-section-number">6.15</span> Create a template vignette</a></li>
+<li>
+<a class="nav-link" href="#github_actions"><span class="header-section-number">6.16</span> Enable GitHub Actions</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#key-differences-between-rworkflows-vs.-usethis-biocthis-strategies"><span class="header-section-number">6.16.1</span> Key differences between rworkflows vs. usethis + biocthis strategies</a></li>
+<li><a class="nav-link" href="#using-rworkflows-8"><span class="header-section-number">6.16.2</span> Using rworkflows</a></li>
+<li><a class="nav-link" href="#using-usethis-biocthis-8"><span class="header-section-number">6.16.3</span> Using usethis + biocthis</a></li>
+</ul>
+</li>
+<li>
+<a class="nav-link" href="#deploy-github-actions"><span class="header-section-number">6.17</span> Deploy GitHub Actions</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#push-changes-to-github"><span class="header-section-number">6.17.1</span> Push changes to GitHub</a></li>
+<li><a class="nav-link" href="#special-commit-messages"><span class="header-section-number">6.17.2</span> Special commit messages</a></li>
+</ul>
+</li>
+<li><a class="nav-link" href="#add-r-code"><span class="header-section-number">6.18</span> Add R code</a></li>
+<li><a class="nav-link" href="#github-pages"><span class="header-section-number">6.19</span> GitHub Pages</a></li>
+<li>
+<a class="nav-link" href="#summary-1"><span class="header-section-number">6.20</span> Summary</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#continue-developing-the-package"><span class="header-section-number">6.20.1</span> Continue developing the package</a></li>
+<li><a class="nav-link" href="#takeaways"><span class="header-section-number">6.20.2</span> Takeaways</a></li>
+</ul>
+</li>
+<li>
+<a class="nav-link" href="#further-reading"><span class="header-section-number">6.21</span> Further reading</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#rworkflows"><span class="header-section-number">6.21.1</span> rworkflows</a></li>
+<li><a class="nav-link" href="#biocthis"><span class="header-section-number">6.21.2</span> biocthis</a></li>
+<li><a class="nav-link" href="#making-a-bioconductor-package"><span class="header-section-number">6.21.3</span> Making a Bioconductor package</a></li>
 </ul>
 </li>
 </ul>
@@ -1487,7 +1981,7 @@ community and communicate with fellow package users and developers on the
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Bioconductor Guidelines for Mentors and Mentees</strong>" was written by Kevin Rue-Albrecht. It was last built on 2022-05-11.</p>
+    <p>"<strong>Bioconductor Guidelines for Mentors and Mentees</strong>" was written by Kevin Rue-Albrecht. It was last built on 2023-10-26.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

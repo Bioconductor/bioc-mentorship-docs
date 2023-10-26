@@ -6,17 +6,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>A NEWS | Bioconductor Guidelines for Mentors and Mentees</title>
 <meta name="author" content="Kevin Rue-Albrecht">
-<meta name="description" content="A.1 Version 1.0.0 (2021-07-27) Initial definition of the mentorship guidelines.">
-<meta name="generator" content="bookdown 0.26 with bs4_book()">
+<meta name="description" content="A.1 Version 1.0.1 (2021-03-04)  A.1.1 New features  bioc-package.Rmd Split into parallel workflows: “rworkflows” and “usethis + biocthis”. Removed section referencing usethis::use_coverage() as...">
+<meta name="generator" content="bookdown 0.36 with bs4_book()">
 <meta property="og:title" content="A NEWS | Bioconductor Guidelines for Mentors and Mentees">
 <meta property="og:type" content="book">
-<meta property="og:description" content="A.1 Version 1.0.0 (2021-07-27) Initial definition of the mentorship guidelines.">
+<meta property="og:description" content="A.1 Version 1.0.1 (2021-03-04)  A.1.1 New features  bioc-package.Rmd Split into parallel workflows: “rworkflows” and “usethis + biocthis”. Removed section referencing usethis::use_coverage() as...">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="A NEWS | Bioconductor Guidelines for Mentors and Mentees">
-<meta name="twitter:description" content="A.1 Version 1.0.0 (2021-07-27) Initial definition of the mentorship guidelines.">
+<meta name="twitter:description" content="A.1 Version 1.0.1 (2021-03-04)  A.1.1 New features  bioc-package.Rmd Split into parallel workflows: “rworkflows” and “usethis + biocthis”. Removed section referencing usethis::use_coverage() as...">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
-<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.3.1/transition.js"></script><script src="libs/bs3compat-0.3.1/tabs.js"></script><script src="libs/bs3compat-0.3.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.5.1/transition.js"></script><script src="libs/bs3compat-0.5.1/tabs.js"></script><script src="libs/bs3compat-0.5.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
     
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
@@ -97,9 +97,71 @@
 <h1>
 <span class="header-section-number">A</span> NEWS<a class="anchor" aria-label="anchor" href="#booknews"><i class="fas fa-link"></i></a>
 </h1>
-<div id="version-1.0.0-2021-07-27" class="section level2" number="13.1">
+<div id="version-1.0.1-2021-03-04" class="section level2" number="13.1">
 <h2>
-<span class="header-section-number">A.1</span> Version 1.0.0 (2021-07-27)<a class="anchor" aria-label="anchor" href="#version-1.0.0-2021-07-27"><i class="fas fa-link"></i></a>
+<span class="header-section-number">A.1</span> Version 1.0.1 (2021-03-04)<a class="anchor" aria-label="anchor" href="#version-1.0.1-2021-03-04"><i class="fas fa-link"></i></a>
+</h2>
+<div id="new-features" class="section level3" number="13.1.1">
+<h3>
+<span class="header-section-number">A.1.1</span> New features<a class="anchor" aria-label="anchor" href="#new-features"><i class="fas fa-link"></i></a>
+</h3>
+<ul>
+<li>
+<code>bioc-package.Rmd</code>
+<ul>
+<li>Split into parallel workflows: “<code>rworkflows</code>” and “<code>usethis</code> + <code>biocthis</code>”.</li>
+<li>Removed section referencing <code><a href="https://usethis.r-lib.org/reference/use_coverage.html">usethis::use_coverage()</a></code>
+as this is no longer necessary due to changes to how<br><a href="https://about.codecov.io/">Codecov</a> works.</li>
+<li>Add subheaders to the <em>## Edit the DESCRIPTION file</em> section for easier navigation</li>
+<li>Added sections on:
+<ul>
+<li><em>Depends</em></li>
+<li><em>Imports</em></li>
+<li><em>Suggests</em></li>
+<li><em>Remotes</em></li>
+</ul>
+</li>
+<li>Rename section to make more generalisable: <em>Create a template GitHub Actions</em> –&gt; <em>Enable GitHub Actions</em>
+</li>
+<li>Rename section to make less ambiguous: <em>Using GitHub Actions</em> –&gt; <em>Deploy GitHub Actions</em>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div id="bug-fixes" class="section level3" number="13.1.2">
+<h3>
+<span class="header-section-number">A.1.2</span> Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes"><i class="fas fa-link"></i></a>
+</h3>
+<ul>
+<li>Install <code>biochis</code> via <code><a href="https://remotes.r-lib.org/reference/install_bioc.html">remotes::install_bioc()</a></code>
+instead of <code><a href="https://remotes.r-lib.org/reference/install_cran.html">remotes::install_cran()</a></code> (which doesn’t work).</li>
+<li>Fixed typos throughout.</li>
+<li>Fixed typo <code>vignette/</code>–&gt;<code>vignettes/</code>
+</li>
+<li>Example GHA workflow report expired, so it’s weird to reference it in tutorial:
+<ul>
+<li><a href="https://github.com/kevinrue/MyBioconductorPackage/runs/6388422844?check_suite_focus=true" class="uri">https://github.com/kevinrue/MyBioconductorPackage/runs/6388422844?check_suite_focus=true</a></li>
+<li>Instead, just include a link to the Actions tab.</li>
+<li>Rather than saying “The full report is fairly large; only the <code>ERROR</code> message is displayed below.”
+just collapse the full report by default.</li>
+</ul>
+</li>
+<li>
+<em>.github/workflows/build_deploy.yml</em>: Needed a number of fixes.
+<ul>
+<li>pandoc is already included in the Bioconductor docker images, and trying to install it yourself causes problems.</li>
+<li>Even if you were doing this without the Bioc Docker container,
+you would have to fix <code>r-lib/actions/setup-pandoc@master</code> (which no longer exists) –&gt; <code>r-lib/actions/setup-pandoc@v2</code>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="version-1.0.0-2021-07-27" class="section level2" number="13.2">
+<h2>
+<span class="header-section-number">A.2</span> Version 1.0.0 (2021-07-27)<a class="anchor" aria-label="anchor" href="#version-1.0.0-2021-07-27"><i class="fas fa-link"></i></a>
 </h2>
 <ul>
 <li>Initial definition of the mentorship guidelines.</li>
@@ -113,7 +175,13 @@
     <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
       <ul class="nav navbar-nav">
 <li><a class="nav-link" href="#booknews"><span class="header-section-number">A</span> NEWS</a></li>
-<li><a class="nav-link" href="#version-1.0.0-2021-07-27"><span class="header-section-number">A.1</span> Version 1.0.0 (2021-07-27)</a></li>
+<li>
+<a class="nav-link" href="#version-1.0.1-2021-03-04"><span class="header-section-number">A.1</span> Version 1.0.1 (2021-03-04)</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#new-features"><span class="header-section-number">A.1.1</span> New features</a></li>
+<li><a class="nav-link" href="#bug-fixes"><span class="header-section-number">A.1.2</span> Bug fixes</a></li>
+</ul>
+</li>
+<li><a class="nav-link" href="#version-1.0.0-2021-07-27"><span class="header-section-number">A.2</span> Version 1.0.0 (2021-07-27)</a></li>
 </ul>
 
       <div class="book-extra">
@@ -131,7 +199,7 @@
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Bioconductor Guidelines for Mentors and Mentees</strong>" was written by Kevin Rue-Albrecht. It was last built on 2022-05-11.</p>
+    <p>"<strong>Bioconductor Guidelines for Mentors and Mentees</strong>" was written by Kevin Rue-Albrecht. It was last built on 2023-10-26.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
