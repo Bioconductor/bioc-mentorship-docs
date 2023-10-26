@@ -1548,10 +1548,7 @@ See `?rworkflows::use_workflow` for a full description of all arguments.
 ```{r, eval=FALSE}
 rworkflows::use_workflow(run_pkgdown = TRUE, 
                          run_rcmdcheck = TRUE,
-                         run_bioccheck = TRUE,
-                         run_docker = TRUE,
-                         docker_user = "MyDockerName", 
-                         force_new = TRUE)
+                         run_bioccheck = TRUE)
 ```
 
 

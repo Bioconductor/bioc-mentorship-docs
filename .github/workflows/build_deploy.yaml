@@ -5,7 +5,8 @@ on:
       - devel
 
 name: build_deploy
-
+permissions:
+  contents: write
 jobs:
   build_deploy:
     runs-on: ubuntu-latest
@@ -19,15 +20,17 @@ jobs:
     steps:
       - name: Check out repo
         uses: actions/checkout@v2
-
-      - name: Set up pandoc
-        uses: r-lib/actions/setup-pandoc@v2
-
-      - name: Install TinyTeX
+        
+      - name: 🛠 Install Linux system dependencies  
         run: |
-          install.packages('tinytex')
-          tinytex::install_tinytex()
-        shell: Rscript {0}
+          sysreqs=$(Rscript -e 'cat("apt-get update -y && apt-get install -y", paste(gsub("apt-get install -y ", "", remotes::system_requirements("ubuntu", "20.04")), collapse = " "))')
+          echo $sysreqs
+          sudo -s eval "$sysreqs"
+          sudo apt-get install -y qpdf rsync
+        shell: bash {0}
+
+      - name: 🛠 Install latex
+        uses: r-lib/actions/setup-tinytex@v2
 
       - name: Install dependencies
         run: |
@@ -64,12 +67,6 @@ jobs:
         run: |
           bookdown::render_book('index.Rmd', 'bookdown::bs4_book')
         shell: Rscript {0}
-
-      # deploy needs rsync? Seems so.
-      - name: Install deploy dependencies
-        if: github.event_name == 'push' && github.ref == 'refs/heads/devel'
-        run: |
-          apt-get update && apt-get -y install rsync
           
       - name: Deploy 🚀
         if: github.event_name == 'push' && github.ref == 'refs/heads/devel'
